@@ -4,92 +4,111 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Go - вопросы</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
     <link rel="stylesheet"
           href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.5.0/styles/default.min.css">
 </head>
 <body>
-    <div class="container">
-        <header>
-            <nav class="navbar navbar-expand-lg navbar-light bg-light">
-                <div class="container-fluid">
-                    <a class="navbar-brand" href="#">DevInterview</a>
-                    <div class="collapse navbar-collapse" id="navbarNav">
-                        <ul class="navbar-nav">
-                            <li class="nav-item">
-                                <a class="nav-link" href="php.html">PHP - вопросы</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="php_tasks.html">PHP - задачи</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link active" href="go.html">Go - вопросы</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="go_tasks.html">Go - задачи</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="db.html">Базы данных</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="architecture.html">Архитектура</a>
-                            </li>
-                        </ul>
+<div class="container">
+    <header>
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="#">DevInterview</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                        aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav">
+                        <li class="nav-item">
+                            <a class="nav-link" href="php.html">PHP - вопросы</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="php_tasks.html">PHP - задачи</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link active" href="go.html">Go - вопросы</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="go_tasks.html">Go - задачи</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="db.html">Базы данных</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="architecture.html">Архитектура</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+    <main>
+        <div class="accordion" id="accordionBlock">
+            <div class="accordion-item">
+                <h2 class="accordion-header">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#q1">
+                        Slice
+                    </button>
+                </h2>
+                <div id="q1" class="accordion-collapse collapse" data-bs-parent="#accordionBlock">
+                    <div class="accordion-body">
+                        <b>Слайс - это структура данных в основе которой лежит массив.</b><br/>
+                        Слайс имеет три поля: указатель на массив, длину, вместимость.
+                        Длина - это число элементов, на которое ссылается слайс.
+                        Вместимость - это число элементов лежащего в основе массива (начиная с элемента, на который
+                        ссылается указатель слайс).
+                        <br/>
+                        Можно делать много слайсов одного массива.
+                        При этом слайсинг не производит копирование данных исходного массива если хватает вместимости.
+                        Срезу, в отличии от массива, можно динамически изменять вместимость с помощью функции append,
+                        при этом массив может быть скопирован в новый массив большего размера, если не хватает
+                        вместимости исходного массива.<br/>
+                        В функции слайс передается по значению, при этом если в функции делается например append
+                        переданному слайсу и происходит перевыделение массива в следствии не хватки вместимости, то
+                        исходный слайс не меняется в нем остается указатель на изначальный массив.
+                        <br/>
+                        По-умолчанию при заполнении слайс увеличивает свою вместимость x2,
+                        если вместимость слайса превышает 1024, то увелечение происходит частями, например на 1/4
                     </div>
                 </div>
-            </nav>
-        </header>
-        <main>
-            <div class="accordion" id="accordionBlock">
-                <div class="accordion-item">
-                    <h2 class="accordion-header">
-                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#q1">
-                            Slice
-                        </button>
-                    </h2>
-                    <div id="q1" class="accordion-collapse collapse" data-bs-parent="#accordionBlock">
-                        <div class="accordion-body">
-                            <b>Слайс - это структура данных в основе которой лежит массив.</b><br />
-                            Слайс имеет три поля: указатель на массив, длину, вместимость.
-                            Длина - это число элементов, на которое ссылается слайс.
-                            Вместимость - это число элементов лежащего в основе массива (начиная с элемента, на который ссылается указатель слайс).
-                            <br />
-                            Можно делать много слайсов одного массива.
-                            При этом слайсинг не производит копирование данных исходного массива если хватает вместимости.
-                            Срезу, в отличии от массива, можно динамически изменять вместимость с помощью функции append, при этом массив может быть скопирован в новый массив большего размера, если не хватает вместимости исходного массива.<br />
-                            В функции слайс передается по значению, при этом если в функции делается например append переданному слайсу и происходит перевыделение массива в следствии не хватки вместимости, то исходный слайс не меняется в нем остается указатель на изначальный массив.
-                            <br />
-                            По-умолчанию при заполнении слайс увеличивает свою вместимость x2,
-                            если вместимость слайса превышает 1024, то увелечение происходит частями, например на 1/4
-                        </div>
+            </div>
+            <div class="accordion-item">
+                <h2 class="accordion-header">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#q2">
+                        Map
+                    </button>
+                </h2>
+                <div id="q2" class="accordion-collapse collapse" data-bs-parent="#accordionBlock">
+                    <div class="accordion-body">
+                        map, она же хэшмап в go - это тип данных, представляющий собой таблицу ключей ссылок на
+                        значения.
+                        <br/>
+                        Map позволяет обращаться к значениям по ключам за время O(1). Под капотом мапа работает с
+                        помощью функции, позволяющей вычислить по ключу адрес ссылки на значение.
+                        <br/>
+                        Под капотом у map - массив массивов, который при заполнении выделяется в новой памяти уже
+                        большего размера, старая память при этом возвращается. При этом в случае удаления элементов из
+                        map delete (map, key), память не возвращается.
                     </div>
                 </div>
-                <div class="accordion-item">
-                    <h2 class="accordion-header">
-                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#q2">
-                            Map
-                        </button>
-                    </h2>
-                    <div id="q2" class="accordion-collapse collapse" data-bs-parent="#accordionBlock">
-                        <div class="accordion-body">
-                            map, она же хэшмап в go - это тип данных, представляющий собой таблицу ключей ссылок на значения.
-                            <br />
-                            Map позволяет обращаться к значениям по ключам за время O(1). Под капотом мапа работает с помощью функции, позволяющей вычислить по ключу адрес ссылки на значение.
-                            <br />
-                            Под капотом у map - массив массивов, который при заполнении выделяется в новой памяти уже большего размера, старая память при этом возвращается. При этом в случае удаления элементов из map delete (map, key), память не возвращается.
-                        </div>
-                    </div>
-                </div>
-                <div class="accordion-item">
-                    <h2 class="accordion-header">
-                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#q11">
-                            String (Строка)
-                        </button>
-                    </h2>
-                    <div id="q11" class="accordion-collapse collapse" data-bs-parent="#accordionBlock">
-                        <div class="accordion-body">
-                            Строки в go иммутабельные, при любом изменении создается новая строка, занимающая новую память, значение которой копируется из старой с нужными изменениями, поэтому для создания строк стоит использовать strings.Builder.
-                            <pre>
+            </div>
+            <div class="accordion-item">
+                <h2 class="accordion-header">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#q11">
+                        String (Строка)
+                    </button>
+                </h2>
+                <div id="q11" class="accordion-collapse collapse" data-bs-parent="#accordionBlock">
+                    <div class="accordion-body">
+                        Строки в go иммутабельные, при любом изменении создается новая строка, занимающая новую память,
+                        значение которой копируется из старой с нужными изменениями, поэтому для создания строк стоит
+                        использовать strings.Builder.
+                        <pre>
                                 <code class="language-go">
 package main
 
@@ -119,23 +138,26 @@ func main() {
 }
                                 </code>
                             </pre>
-                        </div>
                     </div>
                 </div>
-                <div class="accordion-item">
-                    <h2 class="accordion-header">
-                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#q3">
-                            Defer
-                        </button>
-                    </h2>
-                    <div id="q3" class="accordion-collapse collapse" data-bs-parent="#accordionBlock">
-                        <div class="accordion-body">
-                            defer функции помещаются в отдельный стэк вызовов, когда родительская функция переходит
-                            в состояние выхода например при return, defer функции достаются из стэка в обратном порядке то есть первый вошел последний вышел и вызываются.<br />
-                            После вызова всех defer функций, родительская функция завершает работу. <br />
-                            <b>Аргументы defer функции вычисляются в момент когда она попадает в стэк defer функций.</b><br />
-                            defer может модифицировать возвращаемый функцией именованный результат
-                            <pre><code class="language-go">
+            </div>
+            <div class="accordion-item">
+                <h2 class="accordion-header">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#q3">
+                        Defer
+                    </button>
+                </h2>
+                <div id="q3" class="accordion-collapse collapse" data-bs-parent="#accordionBlock">
+                    <div class="accordion-body">
+                        defer функции помещаются в отдельный стэк вызовов, когда родительская функция переходит
+                        в состояние выхода например при return, defer функции достаются из стэка в обратном порядке то
+                        есть первый вошел последний вышел и вызываются.<br/>
+                        После вызова всех defer функций, родительская функция завершает работу. <br/>
+                        <b>Аргументы defer функции вычисляются в момент когда она попадает в стэк defer
+                            функций.</b><br/>
+                        defer может модифицировать возвращаемый функцией именованный результат
+                        <pre><code class="language-go">
 package main
 
 import "fmt"
@@ -151,45 +173,66 @@ func main() {
     fmt.Println(Triple(5)) // 15
 }
                             </code></pre>
-                        </div>
                     </div>
                 </div>
-                <div class="accordion-item">
-                    <h2 class="accordion-header">
-                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#q4">
-                            Горутина
-                        </button>
-                    </h2>
-                    <div id="q4" class="accordion-collapse collapse" data-bs-parent="#accordionBlock">
-                        <div class="accordion-body">
-                            Горутина — это функция, которая может работать параллельно с другими функциями.<br />
-                            В основе горутин асинхронные вызовы, грин-треды и кооперативная (до 1.14, после 1.14 планировщик решает когда переключить горутины - вытесняющая) многозадачность.<br />
-                            В зависимости от настройки GOMAXPROCS горутины могут выполняться как в одном физическом потоке, так и в нескольких.
-                        </div>
+            </div>
+            <div class="accordion-item">
+                <h2 class="accordion-header">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#q4">
+                        Горутина
+                    </button>
+                </h2>
+                <div id="q4" class="accordion-collapse collapse" data-bs-parent="#accordionBlock">
+                    <div class="accordion-body">
+                        Горутина — это функция, которая может работать параллельно с другими функциями.<br/>
+                        В основе горутин асинхронные вызовы, грин-треды и кооперативная (до 1.14, после 1.14 планировщик
+                        решает когда переключить горутины - вытесняющая) многозадачность.<br/>
+                        В зависимости от настройки GOMAXPROCS горутины могут выполняться как в одном физическом потоке,
+                        так и в нескольких.
                     </div>
                 </div>
-                <div class="accordion-item">
-                    <h2 class="accordion-header">
-                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#q5">
-                            Канал
-                        </button>
-                    </h2>
-                    <div id="q5" class="accordion-collapse collapse" data-bs-parent="#accordionBlock">
-                        <div class="accordion-body">
-                            Канал — это объект связи, с помощью которого горутины обмениваются данными.<br />
-                            <small>Технически это конвейер (или труба), откуда можно считывать или помещать данные. То есть одна горутина может отправить данные в канал, а другая — считать помещенные в этот канал данные.</small><br />
-                            Канал может передавать данные только одного типа, данные других типов через это канал передавать невозможно.<br />
-                            Нулевое значение канала — это <code>nil</code>.
-                            nil канал бесполезен, что бы канал создать нужно выполнить <code>make(chan int)</code><br />
-                            Когда вы помещаете данные в канал, горутина блокируется до тех пор, пока данные не будут считаны другой горутиной из этого канала. deadlock (когда данные из канала ни кто не читает) приведет к аварийному завершению программы<br />
-                            Чтение из закрытого канала мгновенно прекратится и выдастся пустой результат без какой либо ошибки.<br />
-                            При закрытие уже закрытого канала произойдёт паника<br />
-                            <b>Каналы бывают буферизированные и не буферизированные.</b>
-                            Когда размер буфера больше 0, горутина не блокируется до тех пор, пока буфер не будет заполнен. Когда буфер заполнен, любые значения отправляемые через канал, добавляются к буферу, отбрасывая предыдущее значение, которое доступно для чтения (где горутина будет заблокирована). Но есть один подвох, операция чтения на буферизированном канале является жадной, таким образом, как только операция чтения началась, она не будет завершена до полного опустошения буфера. Это означает, что горутина будет считывать буфер канала без блокировки до тех пор, пока буфер не станет пустым.<br />
-                            Фактически что бы разблокировать горутину ждущую буферизированный канал, нужно помести n+1 значение в канал (буфер 3, помещаем 4 значения).<br />
-                            Подобно срезам, буферизированный канал имеет длину и емкость. Длина канала — это количество значений в очереди (не считанных) в буфере канала, емкость — это размер самого буфера канала.<br />
-                            <b>Однонаправленные каналы</b> - это, канал, который сможет только считывать данные или канал который сможет только записывать их. Использование однонаправленного канала улучшает безопасность типов в программe.<br />
-                            <pre><code class="language-go">
+            </div>
+            <div class="accordion-item">
+                <h2 class="accordion-header">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#q5">
+                        Канал
+                    </button>
+                </h2>
+                <div id="q5" class="accordion-collapse collapse" data-bs-parent="#accordionBlock">
+                    <div class="accordion-body">
+                        Канал — это объект связи, с помощью которого горутины обмениваются данными.<br/>
+                        <small>Технически это конвейер (или труба), откуда можно считывать или помещать данные. То есть
+                            одна горутина может отправить данные в канал, а другая — считать помещенные в этот канал
+                            данные.</small><br/>
+                        Канал может передавать данные только одного типа, данные других типов через это канал передавать
+                        невозможно.<br/>
+                        Нулевое значение канала — это <code>nil</code>.
+                        nil канал бесполезен, что бы канал создать нужно выполнить <code>make(chan int)</code><br/>
+                        Когда вы помещаете данные в канал, горутина блокируется до тех пор, пока данные не будут считаны
+                        другой горутиной из этого канала. deadlock (когда данные из канала ни кто не читает) приведет к
+                        аварийному завершению программы<br/>
+                        Чтение из закрытого канала мгновенно прекратится и выдастся пустой результат без какой либо
+                        ошибки.<br/>
+                        При закрытие уже закрытого канала произойдёт паника<br/>
+                        <b>Каналы бывают буферизированные и не буферизированные.</b>
+                        Когда размер буфера больше 0, горутина не блокируется до тех пор, пока буфер не будет заполнен.
+                        Когда буфер заполнен, любые значения отправляемые через канал, добавляются к буферу, отбрасывая
+                        предыдущее значение, которое доступно для чтения (где горутина будет заблокирована). Но есть
+                        один подвох, операция чтения на буферизированном канале является жадной, таким образом, как
+                        только операция чтения началась, она не будет завершена до полного опустошения буфера. Это
+                        означает, что горутина будет считывать буфер канала без блокировки до тех пор, пока буфер не
+                        станет пустым.<br/>
+                        Фактически что бы разблокировать горутину ждущую буферизированный канал, нужно помести n+1
+                        значение в канал (буфер 3, помещаем 4 значения).<br/>
+                        Подобно срезам, буферизированный канал имеет длину и емкость. Длина канала — это количество
+                        значений в очереди (не считанных) в буфере канала, емкость — это размер самого буфера
+                        канала.<br/>
+                        <b>Однонаправленные каналы</b> - это, канал, который сможет только считывать данные или канал
+                        который сможет только записывать их. Использование однонаправленного канала улучшает
+                        безопасность типов в программe.<br/>
+                        <pre><code class="language-go">
 // def := make(chan int) // двунаправленный канал
 // roc := make(<-chan int) // канал для чтения
 // soc := make(chan<- int) // канал для записи
@@ -210,23 +253,27 @@ func main() {
     fmt.Println("main() stopped")
 }
                             </code></pre>
-                            <a href="https://play.golang.org/p/xVQvvb8O4De" target="_blank">Канал каналов (пример)</a><br />
-                        </div>
+                        <a href="https://play.golang.org/p/xVQvvb8O4De" target="_blank">Канал каналов (пример)</a><br/>
                     </div>
                 </div>
-                <div class="accordion-item">
-                    <h2 class="accordion-header">
-                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#q6">
-                            Каналы (select)
-                        </button>
-                    </h2>
-                    <div id="q6" class="accordion-collapse collapse" data-bs-parent="#accordionBlock">
-                        <div class="accordion-body">
-                            select похож на switch без аргументов, но он может использоваться только для операций с каналами. Оператор select используется для выполнения операции только с одним из множества каналов, условно выбранного блоком case.<br />
-                            Так же как и switch, оператор select поддерживает оператор default. default делает блок select всегда неблокируемым.<br />
-                            Можно использовать, чтобы избежать deadlock.<br />
-                            Так же может работать с nil каналом.
-                            <pre><code class="language-go">
+            </div>
+            <div class="accordion-item">
+                <h2 class="accordion-header">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#q6">
+                        Каналы (select)
+                    </button>
+                </h2>
+                <div id="q6" class="accordion-collapse collapse" data-bs-parent="#accordionBlock">
+                    <div class="accordion-body">
+                        select похож на switch без аргументов, но он может использоваться только для операций с
+                        каналами. Оператор select используется для выполнения операции только с одним из множества
+                        каналов, условно выбранного блоком case.<br/>
+                        Так же как и switch, оператор select поддерживает оператор default. default делает блок select
+                        всегда неблокируемым.<br/>
+                        Можно использовать, чтобы избежать deadlock.<br/>
+                        Так же может работать с nil каналом.
+                        <pre><code class="language-go">
 package main
 
 import "fmt"
@@ -249,22 +296,23 @@ func main() {
 }
 // Return: No response
                             </code></pre>
-                            <a href="https://play.golang.org/p/xVQvvb8O4De" target="_blank">Канал каналов (пример)</a><br />
-                        </div>
+                        <a href="https://play.golang.org/p/xVQvvb8O4De" target="_blank">Канал каналов (пример)</a><br/>
                     </div>
                 </div>
-                <div class="accordion-item">
-                    <h2 class="accordion-header">
-                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#q7">
-                            WaitGroup (как синхронизировать горутины?)
-                        </button>
-                    </h2>
-                    <div id="q7" class="accordion-collapse collapse" data-bs-parent="#accordionBlock">
-                        <div class="accordion-body">
-                            sync.WaitGroup это счётчик для синзронизации горутин.
-                            В wg.Add() задаём кол-во горутин, в горутинах вызываем wg.Done(),
-                            в main ждём пока выполнятся все горутины с помощью wg.Wait().
-                            <pre><code class="language-go">
+            </div>
+            <div class="accordion-item">
+                <h2 class="accordion-header">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#q7">
+                        WaitGroup (как синхронизировать горутины?)
+                    </button>
+                </h2>
+                <div id="q7" class="accordion-collapse collapse" data-bs-parent="#accordionBlock">
+                    <div class="accordion-body">
+                        sync.WaitGroup это счётчик для синзронизации горутин.
+                        В wg.Add() задаём кол-во горутин, в горутинах вызываем wg.Done(),
+                        в main ждём пока выполнятся все горутины с помощью wg.Wait().
+                        <pre><code class="language-go">
 package main
 
 import (
@@ -290,20 +338,23 @@ func main() {
     fmt.Println("main() stopped")
 }
                             </code></pre>
-                        </div>
                     </div>
                 </div>
-                <div class="accordion-item">
-                    <h2 class="accordion-header">
-                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#q8">
-                            Mutex & Atomic
-                        </button>
-                    </h2>
-                    <div id="q8" class="accordion-collapse collapse" data-bs-parent="#accordionBlock">
-                        <div class="accordion-body">
-                            Mutex один из простых способов организовать конкурентный доступ к данным. Mutex защищает память от гонки данных.<br />
-                            Существуют обычные mutex и RWMutex, RW нужен тогда когда код предназначен больше для конкурентного чтения и меньше для записи. В таком случае RW покажет большую производительность.
-                            <pre>
+            </div>
+            <div class="accordion-item">
+                <h2 class="accordion-header">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#q8">
+                        Mutex & Atomic
+                    </button>
+                </h2>
+                <div id="q8" class="accordion-collapse collapse" data-bs-parent="#accordionBlock">
+                    <div class="accordion-body">
+                        Mutex один из простых способов организовать конкурентный доступ к данным. Mutex защищает память
+                        от гонки данных.<br/>
+                        Существуют обычные mutex и RWMutex, RW нужен тогда когда код предназначен больше для
+                        конкурентного чтения и меньше для записи. В таком случае RW покажет большую производительность.
+                        <pre>
                                 <code class="language-go">
 package main
 
@@ -336,12 +387,15 @@ func main() {
 }
                                 </code>
                             </pre>
-                            Atomic так же может помочь справиться с гонкой данных и может показать большую производительность,
-                            кроме случаев когда необходимо сохранить большую map, вам придется копировать ее каждый раз при обновлении map, что делает ее неэффективной.<br />
-                            Атомик не блокирующий. Он использует cas инстуркции. Атомик проще и быстрее мьютекса.
-                            Но мьютекс не ждет получения блокировки и сразу возвращает статус о неудачной попытке захвата блокировки.
-                            Атомик будет крутится в цикле аля спин лок в ожидании блокировки.
-                            <pre>
+                        Atomic так же может помочь справиться с гонкой данных и может показать большую
+                        производительность,
+                        кроме случаев когда необходимо сохранить большую map, вам придется копировать ее каждый раз при
+                        обновлении map, что делает ее неэффективной.<br/>
+                        Атомик не блокирующий. Он использует cas инстуркции. Атомик проще и быстрее мьютекса.
+                        Но мьютекс не ждет получения блокировки и сразу возвращает статус о неудачной попытке захвата
+                        блокировки.
+                        Атомик будет крутится в цикле аля спин лок в ожидании блокировки.
+                        <pre>
                                 <code class="language-go">
 package main
 
@@ -373,35 +427,41 @@ func main() {
 }
                                 </code>
                             </pre>
-                        </div>
                     </div>
                 </div>
-                <div class="accordion-item">
-                    <h2 class="accordion-header">
-                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#q9">
-                            Panic (паника)
-                        </button>
-                    </h2>
-                    <div id="q9" class="accordion-collapse collapse" data-bs-parent="#accordionBlock">
-                        <div class="accordion-body">
-                            Паника это способ выйти из функции аварийно.
-                            Паникам переполнения стэка вызовов и выхода за пределы памяти нельзя сделать recover. <br />
-                            Физически состояние паники это поле в структуре горутины.
-                        </div>
+            </div>
+            <div class="accordion-item">
+                <h2 class="accordion-header">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#q9">
+                        Panic (паника)
+                    </button>
+                </h2>
+                <div id="q9" class="accordion-collapse collapse" data-bs-parent="#accordionBlock">
+                    <div class="accordion-body">
+                        Паника это способ выйти из функции аварийно.
+                        Паникам переполнения стэка вызовов и выхода за пределы памяти нельзя сделать recover. <br/>
+                        Физически состояние паники это поле в структуре горутины.
                     </div>
                 </div>
-                <div class="accordion-item">
-                    <h2 class="accordion-header">
-                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#q10">
-                            Interface
-                        </button>
-                    </h2>
-                    <div id="q10" class="accordion-collapse collapse" data-bs-parent="#accordionBlock">
-                        <div class="accordion-body">
-                            Интерфейсный тип в Go — это своего рода определение. Он определяет и описывает конкретные методы, которые должны быть у какого-то другого типа.<br />
-                            В отличие от других языков, в go структура будет имплементировать интерфейс автоматически если в структуре реализованы все методы этого интерфейса.<br />
-                             Пустой интерфейс - это не определённый (любой) тип. Может использоваться для реализации полиморфизма, т.е. возможности передавать в метод динамические типы и обрабатывать их внутри метода
-                            <pre>
+            </div>
+            <div class="accordion-item">
+                <h2 class="accordion-header">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#q10">
+                        Interface
+                    </button>
+                </h2>
+                <div id="q10" class="accordion-collapse collapse" data-bs-parent="#accordionBlock">
+                    <div class="accordion-body">
+                        Интерфейсный тип в Go — это своего рода определение. Он определяет и описывает конкретные
+                        методы, которые должны быть у какого-то другого типа.<br/>
+                        В отличие от других языков, в go структура будет имплементировать интерфейс автоматически если в
+                        структуре реализованы все методы этого интерфейса.<br/>
+                        Пустой интерфейс - это не определённый (любой) тип. Может использоваться для реализации
+                        полиморфизма, т.е. возможности передавать в метод динамические типы и обрабатывать их внутри
+                        метода
+                        <pre>
                                 <code class="language-go">
 func Scan(val interface{}) error {
 	switch v := val.(type) {
@@ -415,20 +475,21 @@ func Scan(val interface{}) error {
 }
                                 </code>
                             </pre>
-                        </div>
                     </div>
                 </div>
-                <div class="accordion-item">
-                    <h2 class="accordion-header">
-                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#q12">
-                            Дженерики
-                        </button>
-                    </h2>
-                    <div id="q12" class="accordion-collapse collapse" data-bs-parent="#accordionBlock">
-                        <div class="accordion-body">
-                            Дженерики - встроенная (с версии 1.18) конструкция, позволяющая создавать динамически
-                            типизированные аргументы.
-                            <pre>
+            </div>
+            <div class="accordion-item">
+                <h2 class="accordion-header">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#q12">
+                        Дженерики
+                    </button>
+                </h2>
+                <div id="q12" class="accordion-collapse collapse" data-bs-parent="#accordionBlock">
+                    <div class="accordion-body">
+                        Дженерики - встроенная (с версии 1.18) конструкция, позволяющая создавать динамически
+                        типизированные аргументы.
+                        <pre>
                                 <code class="language-go">
 // Встроенные интерфейсы comparable и any
 type Number interface {
@@ -464,14 +525,16 @@ func existsInSlice[T comparable](val T, values []T) bool {
 }
                                 </code>
                             </pre>
-                        </div>
                     </div>
                 </div>
             </div>
-        </main>
-    </div>
+        </div>
+    </main>
+</div>
 </body>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
+        crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.5.0/highlight.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.5.0/languages/go.min.js"></script>
 <script>hljs.highlightAll();</script>

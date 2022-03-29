@@ -4,69 +4,244 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Php - вопросы</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
 
 </head>
 <body>
-    <div class="container">
-        <header>
-            <nav class="navbar navbar-expand-lg navbar-light bg-light">
-                <div class="container-fluid">
-                    <a class="navbar-brand" href="#">DevInterview</a>
-                    <div class="collapse navbar-collapse" id="navbarNav">
-                        <ul class="navbar-nav">
-                            <li class="nav-item">
-                                <a class="nav-link active" aria-current="page" href="php.html">PHP - вопросы</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="php_tasks.html">PHP - задачи</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="go.html">Go - вопросы</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="go_tasks.html">Go - задачи</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="db.html">Базы данных</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="architecture.html">Архитектура</a>
-                            </li>
-                        </ul>
-                    </div>
+<div class="container">
+    <header>
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="#">DevInterview</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                        aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav">
+                        <li class="nav-item">
+                            <a class="nav-link active" aria-current="page" href="php.html">PHP - вопросы</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="php_tasks.html">PHP - задачи</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="go.html">Go - вопросы</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="go_tasks.html">Go - задачи</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="db.html">Базы данных</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="architecture.html">Архитектура</a>
+                        </li>
+                    </ul>
                 </div>
-            </nav>
-        </header>
-        <main>
-            <div class="accordion">
-                <div class="accordion-item">
-                    <h2 class="accordion-header" id="headingTwo">
-                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-                            Accordion Item #2
-                        </button>
-                    </h2>
-                    <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#accordionExample">
-                        <div class="accordion-body">
-                            <strong>This is the second item's accordion body.</strong> It is hidden by default, until the collapse plugin adds the appropriate classes that we use to style each element. These classes control the overall appearance, as well as the showing and hiding via CSS transitions. You can modify any of this with custom CSS or overriding our default variables. It's also worth noting that just about any HTML can go within the <code>.accordion-body</code>, though the transition does limit overflow.
-                        </div>
-                    </div>
-                </div>
-                <div class="accordion-item">
-                    <h2 class="accordion-header" id="headingThree">
-                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
-                            Accordion Item #3
-                        </button>
-                    </h2>
-                    <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#accordionExample">
-                        <div class="accordion-body">
-                            <strong>This is the third item's accordion body.</strong> It is hidden by default, until the collapse plugin adds the appropriate classes that we use to style each element. These classes control the overall appearance, as well as the showing and hiding via CSS transitions. You can modify any of this with custom CSS or overriding our default variables. It's also worth noting that just about any HTML can go within the <code>.accordion-body</code>, though the transition does limit overflow.
-                        </div>
+            </div>
+        </nav>
+    </header>
+    <main>
+        <div class="accordion" id="accordionBlock">
+            <div class="accordion-item">
+                <h2 class="accordion-header">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#q1">
+                        Типы
+                    </button>
+                </h2>
+                <div id="q1" class="accordion-collapse collapse" data-bs-parent="#accordionBlock">
+                    <div class="accordion-body">
+                        <b>Скалярные:</b> bool (логический тип), int (целые числа), float (дробные числа), string
+                        (строки)<br/>
+                        <b>Смешанные:</b> array (массивы), object (объекты), enum (PHP8.1)<br/>
+                        <b>Специальные типы:</b> null ("пустой" тип), resource (ресурсы)<br/>
+                        <b>Псевдотипы:</b> Iterable, mixed (любой тип PHP8), callable (функции)
                     </div>
                 </div>
             </div>
-        </main>
-    </div>
+            <div class="accordion-item">
+                <h2 class="accordion-header">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#q2">
+                        Отладка кода
+                    </button>
+                </h2>
+                <div id="q2" class="accordion-collapse collapse" data-bs-parent="#accordionBlock">
+                    <div class="accordion-body">
+                        xdebug, логи, dd или echo, debug_backtrace (есть риски его использования в случае с длинными
+                        трейсами и отказе логов сентри и сети)
+                    </div>
+                </div>
+            </div>
+            <div class="accordion-item">
+                <h2 class="accordion-header">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#q3">
+                        Области видимости членов классов
+                    </button>
+                </h2>
+                <div id="q3" class="accordion-collapse collapse" data-bs-parent="#accordionBlock">
+                    <div class="accordion-body">
+                        <code>private</code> - Видна только в своем собственном классе<br/>
+                        <code>public</code> - Видна для любого другого кода, осуществляющего доступ к классу<br/>
+                        <code>protected</code> - Видна только родительских классов и классов, которые расширяют текущий
+                        класс<br/>
+                        По дефолту все методы должны быть private - если специально не предусмотрено иного.
+                    </div>
+                </div>
+            </div>
+            <div class="accordion-item">
+                <h2 class="accordion-header">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#q4">
+                        PSR
+                    </button>
+                </h2>
+                <div id="q4" class="accordion-collapse collapse" data-bs-parent="#accordionBlock">
+                    <div class="accordion-body">
+                        PSR-1 - Basic Coding Standard<br/>
+                        PSR-12 - Extended Coding Style Guide<br/>
+                        PSR-4 — Autoloading Standard<br/>
+                        PSR-3 - Logger Interface<br/>
+                        PSR-6 - Caching Interface<br/>
+                        PSR-7 - HTTP Message Interfaces<br/>
+                        PSR-11 - Container Interface<br/>
+                        PSR-14 - Event Dispatcher<br/>
+                        PSR-15 - HTTP Handlers<br/>
+                        PSR-16 - Simple Cache
+                    </div>
+                </div>
+            </div>
+            <div class="accordion-item">
+                <h2 class="accordion-header">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#q5">
+                        Composer
+                    </button>
+                </h2>
+                <div id="q5" class="accordion-collapse collapse" data-bs-parent="#accordionBlock">
+                    <div class="accordion-body">
+                        Менеджер пакетов для управления зависимостями<br/>
+                        Composer update создаст новый composer.lock файл и проапдейтит где возможно до последних версий
+                        в соответствии с composer.json.<br/>
+                        Composer install не будет менять composer.lock и апдейтить версии - просто установит то что уже
+                        есть в composer.lock.
+                    </div>
+                </div>
+            </div>
+            <div class="accordion-item">
+                <h2 class="accordion-header">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#q6">
+                        $this, self, static
+                    </button>
+                </h2>
+                <div id="q6" class="accordion-collapse collapse" data-bs-parent="#accordionBlock">
+                    <div class="accordion-body">
+                        $this - указывает на текущий объект<br/>
+                        self - всегда указывает на тот класс в котором функция объявлена<br/>
+                        static - на тот класс от которого вызывается, реализуя позднее статическое связывание
+                    </div>
+                </div>
+            </div>
+            <div class="accordion-item">
+                <h2 class="accordion-header">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#q7">
+                        Как найти элемент в массиве
+                    </button>
+                </h2>
+                <div id="q7" class="accordion-collapse collapse" data-bs-parent="#accordionBlock">
+                    <div class="accordion-body">
+                        in_array имеет сложность O(N)<br/>
+                        Для больших массивов лучше собрать хэшмап и проверять array_key_exists, сложность в среднем O(1)
+                        в подготовленном массиве.
+                    </div>
+                </div>
+            </div>
+            <div class="accordion-item">
+                <h2 class="accordion-header">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#q8">
+                        Copy-on-write (как передаются массивы в функцию)
+                    </button>
+                </h2>
+                <div id="q8" class="accordion-collapse collapse" data-bs-parent="#accordionBlock">
+                    <div class="accordion-body">
+                        Массивы передаются по значению, но чтоб избежать копирований больших кусков памяти,
+                        копирование происходит только при попытке изменения массива
+                    </div>
+                </div>
+            </div>
+            <div class="accordion-item">
+                <h2 class="accordion-header">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#q9">
+                        Сложность функции count($array)
+                    </button>
+                </h2>
+                <div id="q9" class="accordion-collapse collapse" data-bs-parent="#accordionBlock">
+                    <div class="accordion-body">
+                        Count лежит в структуре массива, по этому сложность O(1)
+                    </div>
+                </div>
+            </div>
+            <div class="accordion-item">
+                <h2 class="accordion-header">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#q10">
+                        Callable
+                    </button>
+                </h2>
+                <div id="q10" class="accordion-collapse collapse" data-bs-parent="#accordionBlock">
+                    <div class="accordion-body">
+                        Псевдотип, который может содержать в себе заданный код функции, они же анонимные функции.<br/>
+                        Может быть строкой ('ClassName::method', 'in_array'), массивом ([Foo::class, 'bar']) или кодом.
+                    </div>
+                </div>
+            </div>
+            <div class="accordion-item">
+                <h2 class="accordion-header">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#q11">
+                        Исключения (throw)
+                    </button>
+                </h2>
+                <div id="q11" class="accordion-collapse collapse" data-bs-parent="#accordionBlock">
+                    <div class="accordion-body">
+                        Классифицированные ошибки. Поймать исключение можно при помощи catch.<br/>
+                        Так же в конструкции есть блок finally, который выполниться всегда, не зависимо от того было ли
+                        выброшено исключение.<br/>
+                        Исключения можно наследовать и переопределять. Можно наследовать исключения от интерфейсов и
+                        перехватывать по ним.<br/>
+                        Исключения по ошибки памяти невозможно отловить.
+                    </div>
+                </div>
+            </div>
+            <div class="accordion-item">
+                <h2 class="accordion-header">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#q12">
+                        Анонимные функции (замыкания)
+                    </button>
+                </h2>
+                <div id="q12" class="accordion-collapse collapse" data-bs-parent="#accordionBlock">
+                    <div class="accordion-body">
+                        Анонимные функции, также известные как замыкания (closures), позволяют создавать функции, не
+                        имеющие определённых имён.<br/>
+                        Замыкание инкапсулированную область видимости. Передать значение в замыкание можно через
+                        конструкцию use.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+</div>
 </body>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
+        crossorigin="anonymous"></script>
 </html>
