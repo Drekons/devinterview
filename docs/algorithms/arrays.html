@@ -1,0 +1,1726 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Архитектура</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/default.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+</head>
+<body>
+<div class="container">
+    <header>
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="#">DevInterview</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                        aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav">
+                        <li class="nav-item">
+                            <a class="nav-link" href="../php.html">PHP - вопросы</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="../php_tasks.html">PHP - задачи</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="../go.html">Go - вопросы</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="../go_tasks.html">Go - задачи</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="../db.html">Базы данных</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="../architecture.html">Архитектура</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link active" href="../algorithms.html">Алгоритмы</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+    <main>
+        <h1>Алгоритмы - Массивы</h1>
+        <div class="accordion" id="accordionBlock">
+            <div class="accordion-item">
+                <h2 class="accordion-header">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#q1">
+                        Самая длинная непрерывная последовательность
+                    </button>
+                </h2>
+                <div id="q1" class="accordion-collapse collapse" data-bs-parent="#accordionBlock">
+                    <div class="accordion-body">
+                        <p>
+                            Этот код решает задачу нахождения длины самой длинной непрерывной подпоследовательности
+                            одинаковых элементов в массиве.
+                        </p>
+                        <h3>Алгоритм решения</h3>
+                        <ol>
+                            <li>Инициализируем переменную maxLength для хранения максимальной длины.
+                            </li>
+                            <li>Проходим по массиву, начиная с первого элемента до предпоследнего.</li>
+                            <li>Для каждого элемента:<br/>
+                                <ul>
+                                    <li>Устанавливаем левый указатель (left) на текущий элемент.</li>
+                                    <li>Устанавливаем правый указатель (right) на следующий элемент.
+                                    </li>
+                                    <li>Двигаем правый указатель вправо, пока встречаются элементы,
+                                        равные текущему.
+                                    </li>
+                                    <li>Вычисляем длину найденной подпоследовательности (right -
+                                        left).
+                                    </li>
+                                    <li>Обновляем maxLength, если найденная длина больше.</li>
+                                    <li>Перемещаем индекс i на конец найденной подпоследовательности
+                                        минус 1.
+                                    </li>
+                                </ul>
+                            </li>
+                            <li>Возвращаем maxLength.</li>
+                        </ol>
+                        <p>
+                            Временная сложность: O(n), где n - длина массива. Несмотря на вложенный
+                            цикл, каждый элемент массива просматривается не более двух раз: один раз как
+                            начало последовательности и один раз как её продолжение.</p>
+                        <p>Пространственная сложность: O(1), так как используется только фиксированное
+                            количество дополнительных переменных, независимо от размера входного
+                            массива.
+                        </p>
+                        <pre><code class="go">func findMaxLength(arr []int) int {
+	var maxLength int
+	for i := 0; i < len(arr)-1; i++ {
+		left, right := i, i+1
+		for right < len(arr) && arr[left] == arr[right] {
+			right++
+		}
+		maxLength = max(maxLength, right-left)
+		i = right - 1
+	}
+	return maxLength
+}</code>
+                                        </pre>
+                    </div>
+                </div>
+            </div>
+            <div class="accordion-item">
+                <h2 class="accordion-header">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#q2">
+                        Пересечение двух массивов
+                    </button>
+                </h2>
+                <div id="q2" class="accordion-collapse collapse" data-bs-parent="#accordionBlock">
+                    <div class="accordion-body">
+                        <p>Этот код реализует функцию <code>intersect</code>, которая находит пересечение двух
+                            целочисленных массивов <code>nums1</code> и <code>nums2</code>. Пересечение включает все
+                            элементы, которые присутствуют в обоих массивах, с учетом их количества.</p>
+                        <h3>Алгоритм решения</h3>
+                        <ol>
+                            <li>Создание хеш-таблицы (map) для подсчета элементов первого массива:
+                                <ul>
+                                    <li>Проходим по <code>nums1</code> и увеличиваем счетчик для каждого элемента в map.
+                                    </li>
+                                </ul>
+                            </li>
+                            <li>Поиск пересечения:
+                                <ul>
+                                    <li>Проходим по <code>nums2</code>.</li>
+                                    <li>Если элемент присутствует в map и его счетчик больше 0:
+                                        <ul>
+                                            <li>Добавляем элемент в результат.</li>
+                                            <li>Уменьшаем счетчик элемента в map.</li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li>Возвращаем результирующий массив.</li>
+                        </ol>
+                        <ul>
+                            <li><strong>Временная сложность:</strong> O(n + m)
+                                <ul>
+                                    <li>n - длина nums1</li>
+                                    <li>m - длина nums2</li>
+                                    <li>Требуется один проход по каждому массиву</li>
+                                </ul>
+                            </li>
+                            <li><strong>Пространственная сложность:</strong> O(min(n, m))
+                                <ul>
+                                    <li>Для хранения map и результирующего массива</li>
+                                    <li>В худшем случае размер равен длине меньшего из двух массивов</li>
+                                </ul>
+                            </li>
+                        </ul>
+                        <pre><code class="go">func intersect(nums1 []int, nums2 []int) []int {
+	// Создаем map для подсчета элементов в nums1
+	count := make(map[int]int)
+	for _, num := range nums1 {
+		count[num]++
+	}
+
+	// Создаем слайс для результата
+	result := []int{}
+
+	// Проходим по nums2 и проверяем наличие элементов в map
+	for _, num := range nums2 {
+		if count[num] > 0 {
+			result = append(result, num)
+			count[num]--
+		}
+	}
+
+	return result
+}</code>
+                                        </pre>
+                    </div>
+                </div>
+            </div>
+            <div class="accordion-item">
+                <h2 class="accordion-header">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#q3">
+                        Слияние двух отсортированных массивов
+                    </button>
+                </h2>
+                <div id="q3" class="accordion-collapse collapse" data-bs-parent="#accordionBlock">
+                    <div class="accordion-body">
+                        <p>Этот код реализует функцию <code>merge</code>, которая объединяет два отсортированных массива
+                            <code>nums1</code> и <code>nums2</code> в один отсортированный массив. Результат сохраняется
+                            в массиве <code>nums1</code>, который изначально имеет достаточно места для хранения всех
+                            элементов.</p>
+                        <h3>Алгоритм решения</h3>
+                        <ol>
+                            <li>Инициализация указателей:
+                                <ul>
+                                    <li><code>p1</code>: указывает на последний элемент в <code>nums1</code></li>
+                                    <li><code>p2</code>: указывает на последний элемент в <code>nums2</code></li>
+                                    <li><code>p</code>: указывает на последнюю позицию в объединенном массиве</li>
+                                </ul>
+                            </li>
+                            <li>Итерация с конца массивов:
+                                <ul>
+                                    <li>Сравниваем элементы <code>nums1[p1]</code> и <code>nums2[p2]</code></li>
+                                    <li>Больший элемент помещаем в позицию <code>p</code> массива <code>nums1</code>
+                                    </li>
+                                    <li>Сдвигаем соответствующий указатель и <code>p</code></li>
+                                </ul>
+                            </li>
+                            <li>Продолжаем, пока не обработаем все элементы из <code>nums2</code></li>
+                        </ol>
+                        <ul>
+                            <li><strong>Временная сложность:</strong> O(m+n)
+                                <ul>
+                                    <li>m - количество элементов в nums1</li>
+                                    <li>n - количество элементов в nums2</li>
+                                    <li>Алгоритм проходит по всем элементам обоих массивов один раз</li>
+                                </ul>
+                            </li>
+                            <li><strong>Пространственная сложность:</strong> O(1)
+                                <ul>
+                                    <li>Алгоритм работает in-place, не используя дополнительной памяти</li>
+                                </ul>
+                            </li>
+                        </ul>
+                        <pre><code class="go">func merge(nums1 []int, m int, nums2 []int, n int) {
+	// Указатели на последние элементы массивов
+	p1 := m - 1    // для nums1
+	p2 := n - 1    // для nums2
+	p := m + n - 1 // для объединенного массива
+
+	// Идем с конца массивов, заполняя nums1 с конца
+	for p2 >= 0 {
+		if p1 >= 0 && nums1[p1] > nums2[p2] {
+			nums1[p] = nums1[p1]
+			p1--
+		} else {
+			nums1[p] = nums2[p2]
+			p2--
+		}
+		p--
+	}
+}</code>
+                                        </pre>
+                    </div>
+                </div>
+            </div>
+            <div class="accordion-item">
+                <h2 class="accordion-header">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#q4">
+                        Поиск пропущенного числа
+                    </button>
+                </h2>
+                <div id="q4" class="accordion-collapse collapse" data-bs-parent="#accordionBlock">
+                    <div class="accordion-body">
+                        <p>Этот код реализует функцию <code>missingNumber</code>, которая находит пропущенное число в
+                            последовательности от 0 до n, где n - длина входного массива <code>nums</code>.
+                            Предполагается, что в массиве <code>nums</code> содержатся все числа от 0 до n, кроме
+                            одного.</p>
+                        <h3>Алгоритм решения</h3>
+                        <ol>
+                            <li>Инициализация переменных:
+                                <ul>
+                                    <li><code>sum</code>: сумма всех чисел от 0 до n (включительно)</li>
+                                    <li><code>res</code>: сумма всех чисел в массиве <code>nums</code></li>
+                                </ul>
+                            </li>
+                            <li>Итерация по массиву:
+                                <ul>
+                                    <li>Добавляем i к <code>sum</code> (учитывая числа от 0 до n-1)</li>
+                                    <li>Добавляем <code>nums[i]</code> к <code>res</code></li>
+                                </ul>
+                            </li>
+                            <li>Вычисление пропущенного числа:
+                                <ul>
+                                    <li>Возвращаем разницу между <code>sum</code> и <code>res</code></li>
+                                </ul>
+                            </li>
+                        </ol>
+                        <ul>
+                            <li><strong>Временная сложность:</strong> O(n)
+                                <ul>
+                                    <li>Где n - длина входного массива</li>
+                                    <li>Алгоритм проходит по массиву один раз</li>
+                                </ul>
+                            </li>
+                            <li><strong>Пространственная сложность:</strong> O(1)
+                                <ul>
+                                    <li>Используется постоянное количество дополнительной памяти</li>
+                                </ul>
+                            </li>
+                        </ul>
+                        <pre><code class="go">func missingNumber(nums []int) int {
+	sum := len(nums)
+	res := 0
+	for i := 0; i < len(nums); i++ {
+		sum += i
+		res += nums[i]
+	}
+
+	return sum - res
+}</code>
+                                        </pre>
+                    </div>
+                </div>
+            </div>
+            <div class="accordion-item">
+                <h2 class="accordion-header">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#q5">
+                        Перемещение нулей в конец массива
+                    </button>
+                </h2>
+                <div id="q5" class="accordion-collapse collapse" data-bs-parent="#accordionBlock">
+                    <div class="accordion-body">
+                        <p>Этот код реализует функцию <code>moveZeroes</code>, которая перемещает все нули в конец
+                            массива <code>nums</code>, сохраняя относительный порядок ненулевых элементов.</p>
+                        <h3>Алгоритм решения</h3>
+                        <ol>
+                            <li>Инициализация указателя <code>nonZeroIndex</code>:
+                                <ul>
+                                    <li>Указывает на позицию, куда нужно поместить следующий ненулевой элемент</li>
+                                </ul>
+                            </li>
+                            <li>Первый проход по массиву:
+                                <ul>
+                                    <li>Если элемент не равен нулю, перемещаем его на позицию <code>nonZeroIndex</code>
+                                    </li>
+                                    <li>Увеличиваем <code>nonZeroIndex</code></li>
+                                </ul>
+                            </li>
+                            <li>Второй проход по оставшейся части массива:
+                                <ul>
+                                    <li>Заполняем все позиции от <code>nonZeroIndex</code> до конца массива нулями</li>
+                                </ul>
+                            </li>
+                        </ol>
+                        <ul>
+                            <li><strong>Временная сложность:</strong> O(n)
+                                <ul>
+                                    <li>Где n - длина входного массива</li>
+                                    <li>Алгоритм проходит по массиву дважды: один раз для перемещения ненулевых
+                                        элементов и второй раз для заполнения нулями
+                                    </li>
+                                </ul>
+                            </li>
+                            <li><strong>Пространственная сложность:</strong> O(1)
+                                <ul>
+                                    <li>Алгоритм работает in-place, не используя дополнительной памяти</li>
+                                </ul>
+                            </li>
+                        </ul>
+                        <pre><code class="go">func moveZeroes(nums []int) {
+	nonZeroIndex := 0
+
+	// Перемещаем все ненулевые элементы в начало массива
+	for i := 0; i < len(nums); i++ {
+		if nums[i] != 0 {
+			nums[nonZeroIndex] = nums[i]
+			nonZeroIndex++
+		}
+	}
+
+	// Заполняем оставшуюся часть массива нулями
+	for i := nonZeroIndex; i < len(nums); i++ {
+		nums[i] = 0
+	}
+}</code>
+                                        </pre>
+                    </div>
+                </div>
+            </div>
+            <div class="accordion-item">
+                <h2 class="accordion-header">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#q6">
+                        Сортировка квадратов элементов отсортированного массива
+                    </button>
+                </h2>
+                <div id="q6" class="accordion-collapse collapse" data-bs-parent="#accordionBlock">
+                    <div class="accordion-body">
+                        <p>Функция <code>sortedSquares</code> принимает отсортированный массив целых чисел (возможно,
+                            содержащий отрицательные числа) и возвращает новый массив, содержащий квадраты этих чисел в
+                            отсортированном порядке.</p>
+                        <h3>Алгоритм решения</h3>
+                        <ol>
+                            <li>Инициализация:
+                                <ul>
+                                    <li>Создаем результирующий массив той же длины, что и входной</li>
+                                    <li>Устанавливаем два указателя: <code>left</code> в начало и <code>right</code> в
+                                        конец входного массива
+                                    </li>
+                                </ul>
+                            </li>
+                            <li>Итерация с конца результирующего массива:
+                                <ul>
+                                    <li>Сравниваем абсолютные значения чисел на левом и правом указателях</li>
+                                    <li>Больший квадрат помещаем в текущую позицию результата</li>
+                                    <li>Сдвигаем соответствующий указатель</li>
+                                </ul>
+                            </li>
+                            <li>Повторяем, пока не заполним весь результирующий массив</li>
+                        </ol>
+                        <ul>
+                            <li><strong>Временная сложность:</strong> O(n)
+                                <ul>
+                                    <li>Где n - длина входного массива</li>
+                                    <li>Алгоритм проходит по всем элементам ровно один раз</li>
+                                </ul>
+                            </li>
+                            <li><strong>Пространственная сложность:</strong> O(n)
+                                <ul>
+                                    <li>Создается новый массив для хранения результата, длина которого равна длине
+                                        входного массива
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                        <pre><code class="go">func sortedSquares(nums []int) []int {
+	n := len(nums)
+	result := make([]int, n)
+	left, right := 0, n-1
+
+	for i := n - 1; i >= 0; i-- {
+		if abs(nums[left]) > abs(nums[right]) {
+			result[i] = nums[left] * nums[left]
+			left++
+		} else {
+			result[i] = nums[right] * nums[right]
+			right--
+		}
+	}
+
+	return result
+}
+
+func abs(x int) int {
+	if x < 0 {
+		return -x
+	}
+	return x
+}</code>
+                                        </pre>
+                    </div>
+                </div>
+            </div>
+            <div class="accordion-item">
+                <h2 class="accordion-header">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#q7">
+                        Суммирование диапазонов в отсортированном массиве ["0->2", "4->5", "7"]
+                    </button>
+                </h2>
+                <div id="q7" class="accordion-collapse collapse" data-bs-parent="#accordionBlock">
+                    <div class="accordion-body">
+                        <p>Функция <code>summaryRanges</code> принимает отсортированный массив целых чисел и возвращает
+                            список строк, представляющих диапазоны последовательных чисел в этом массиве.</p>
+                        <h3>Алгоритм решения</h3>
+                        <ol>
+                            <li>Проверка на пустой массив:
+                                <ul>
+                                    <li>Если массив пуст, возвращаем пустой список строк</li>
+                                </ul>
+                            </li>
+                            <li>Инициализация:
+                                <ul>
+                                    <li>Создаем пустой список строк для результата</li>
+                                    <li>Инициализируем пустую строку <code>current</code> для хранения начала текущего
+                                        диапазона
+                                    </li>
+                                </ul>
+                            </li>
+                            <li>Итерация по массиву:
+                                <ul>
+                                    <li>Для каждого числа проверяем три случая:
+                                        <ol>
+                                            <li>Не последний элемент и нет текущего диапазона</li>
+                                            <li>Не последний элемент и есть текущий диапазон</li>
+                                            <li>Последний элемент массива</li>
+                                        </ol>
+                                    </li>
+                                    <li>В зависимости от случая, либо начинаем новый диапазон, либо завершаем текущий,
+                                        либо добавляем одиночное число
+                                    </li>
+                                </ul>
+                            </li>
+                            <li>Формирование результата:
+                                <ul>
+                                    <li>Добавляем сформированные диапазоны или одиночные числа в результирующий список
+                                    </li>
+                                </ul>
+                            </li>
+                        </ol>
+                        <ul>
+                            <li><strong>Временная сложность:</strong> O(n)
+                                <ul>
+                                    <li>Где n - длина входного массива</li>
+                                    <li>Алгоритм проходит по всем элементам массива ровно один раз</li>
+                                </ul>
+                            </li>
+                            <li><strong>Пространственная сложность:</strong> O(n)
+                                <ul>
+                                    <li>В худшем случае (когда каждое число образует отдельный диапазон) результирующий
+                                        список будет содержать n элементов
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                        <pre><code class="go">func summaryRanges(nums []int) []string {
+	if len(nums) == 0 {
+		return []string{}
+	}
+
+	var res []string
+	current := ""
+
+	for i, num := range nums {
+		switch {
+		case i < len(nums)-1 && current == "":
+			if num+1 == nums[i+1] {
+				current = strconv.Itoa(num)
+			} else {
+				res = append(res, strconv.Itoa(num))
+			}
+		case i < len(nums)-1 && current != "":
+			if num+1 != nums[i+1] {
+				res = append(res, current+"->"+strconv.Itoa(num))
+				current = ""
+			}
+		case i == len(nums)-1:
+			if current != "" {
+				res = append(res, current+"->"+strconv.Itoa(num))
+			} else {
+				res = append(res, strconv.Itoa(num))
+			}
+		}
+	}
+
+	return res
+}</code>
+                                        </pre>
+                    </div>
+                </div>
+            </div>
+            <div class="accordion-item">
+                <h2 class="accordion-header">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#q8">
+                        "Two Sum" (Два числа) [Найти индекс чисел в массиве которые дадут target сумму]
+                    </button>
+                </h2>
+                <div id="q8" class="accordion-collapse collapse" data-bs-parent="#accordionBlock">
+                    <div class="accordion-body">
+                        <p>Функция <code>twoSum</code> находит два числа в массиве, сумма которых равна заданному
+                            целевому значению (target). Возвращает индексы этих двух чисел.</p>
+                        <h3>Алгоритм решения</h3>
+                        <ol>
+                            <li>Инициализация:
+                                <ul>
+                                    <li>Создаем пустую хеш-таблицу (map) для хранения чисел и их индексов</li>
+                                </ul>
+                            </li>
+                            <li>Итерация по массиву:
+                                <ul>
+                                    <li>Для каждого числа вычисляем его дополнение (complement) до целевого значения
+                                    </li>
+                                    <li>Проверяем, есть ли дополнение в хеш-таблице</li>
+                                    <li>Если есть, возвращаем индексы текущего числа и его дополнения</li>
+                                    <li>Если нет, добавляем текущее число и его индекс в хеш-таблицу</li>
+                                </ul>
+                            </li>
+                            <li>Если решение не найдено:
+                                <ul>
+                                    <li>Возвращаем nil</li>
+                                </ul>
+                            </li>
+                        </ol>
+                        <ul>
+                            <li><strong>Временная сложность:</strong> O(n)
+                                <ul>
+                                    <li>Где n - количество элементов в массиве</li>
+                                    <li>Алгоритм проходит по массиву только один раз</li>
+                                </ul>
+                            </li>
+                            <li><strong>Пространственная сложность:</strong> O(n)
+                                <ul>
+                                    <li>В худшем случае хеш-таблица может содержать все n элементов массива</li>
+                                </ul>
+                            </li>
+                        </ul>
+                        <pre><code class="go">func twoSum(nums []int, target int) []int {
+	m := make(map[int]int)
+	for i, num := range nums {
+		complement := target - num
+		if j, ok := m[complement]; ok {
+			return []int{j, i}
+		}
+		m[num] = i
+	}
+
+	return nil
+}</code>
+                                        </pre>
+                    </div>
+                </div>
+            </div>
+            <div class="accordion-item">
+                <h2 class="accordion-header">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#q9">
+                        Вычисление выражения в обратной польской записи
+                    </button>
+                </h2>
+                <div id="q9" class="accordion-collapse collapse" data-bs-parent="#accordionBlock">
+                    <div class="accordion-body">
+                        <p>Функция <code>evalRPN</code> вычисляет результат арифметического выражения, записанного в
+                            обратной польской нотации (RPN). В этой нотации операнды располагаются перед операторами.
+                        </p>
+                        <h3>Алгоритм решения</h3>
+                        <ol>
+                            <li>Инициализация:
+                                <ul>
+                                    <li>Создаем пустой стек для хранения чисел</li>
+                                </ul>
+                            </li>
+                            <li>Итерация по токенам:
+                                <ul>
+                                    <li>Если токен - число, добавляем его в стек</li>
+                                    <li>Если токен - оператор:
+                                        <ul>
+                                            <li>Извлекаем два последних числа из стека</li>
+                                            <li>Выполняем соответствующую операцию</li>
+                                            <li>Результат помещаем обратно в стек</li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li>Завершение:
+                                <ul>
+                                    <li>Возвращаем единственное число, оставшееся в стеке (результат вычисления)</li>
+                                </ul>
+                            </li>
+                        </ol>
+                        <ul>
+                            <li><strong>Временная сложность:</strong> O(n)
+                                <ul>
+                                    <li>Где n - количество токенов в входном массиве</li>
+                                    <li>Алгоритм проходит по каждому токену ровно один раз</li>
+                                </ul>
+                            </li>
+                            <li><strong>Пространственная сложность:</strong> O(n)
+                                <ul>
+                                    <li>В худшем случае стек может содержать все числа из входного массива</li>
+                                </ul>
+                            </li>
+                        </ul>
+
+                        <pre><code class="go">func evalRPN(tokens []string) int {
+	stack := make([]int, 0)
+	for _, token := range tokens {
+		if num, err := strconv.Atoi(token); err == nil {
+			stack = append(stack, num)
+			continue
+		}
+		a, b := stack[len(stack)-2], stack[len(stack)-1]
+		stack = stack[:len(stack)-2]
+
+		switch token {
+		case "+":
+			stack = append(stack, a+b)
+		case "-":
+			stack = append(stack, a-b)
+		case "*":
+			stack = append(stack, a*b)
+		case "/":
+			stack = append(stack, a/b)
+		}
+	}
+
+	return stack[0]
+}
+</code>
+                                        </pre>
+                    </div>
+                </div>
+            </div>
+            <div class="accordion-item">
+                <h2 class="accordion-header">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#q10">
+                        Поиск первой и последней позиции элемента в отсортированном массиве
+                    </button>
+                </h2>
+                <div id="q10" class="accordion-collapse collapse" data-bs-parent="#accordionBlock">
+                    <div class="accordion-body">
+                        <p>Функция <code>searchRange</code> находит начальную и конечную позиции заданного целевого
+                            значения в отсортированном массиве. Если целевое значение не найдено, возвращается [-1, -1].
+                        </p>
+                        <h3>Алгоритм решения</h3>
+                        <ol>
+                            <li>Проверка на пустой массив:
+                                <ul>
+                                    <li>Если массив пуст, возвращаем [-1, -1]</li>
+                                </ul>
+                            </li>
+                            <li>Бинарный поиск:
+                                <ul>
+                                    <li>Инициализируем указатели left и right на начало и конец массива</li>
+                                    <li>Выполняем бинарный поиск, пока left ≤ right</li>
+                                    <li>Если найдено целевое значение:
+                                        <ul>
+                                            <li>Расширяем диапазон влево и вправо, пока находим целевое значение</li>
+                                            <li>Возвращаем найденный диапазон</li>
+                                        </ul>
+                                    </li>
+                                    <li>Если значение в середине меньше цели, сдвигаем left</li>
+                                    <li>Если значение в середине больше цели, сдвигаем right</li>
+                                </ul>
+                            </li>
+                            <li>Если целевое значение не найдено, возвращаем [-1, -1]</li>
+                        </ol>
+                        <ul>
+                            <li><strong>Временная сложность:</strong>
+                                <ul>
+                                    <li>В лучшем и среднем случае: O(log n) - благодаря бинарному поиску</li>
+                                    <li>В худшем случае: O(n) - когда все элементы равны целевому значению</li>
+                                </ul>
+                            </li>
+                            <li><strong>Пространственная сложность:</strong> O(1)
+                                <ul>
+                                    <li>Используется постоянное количество дополнительной памяти</li>
+                                </ul>
+                            </li>
+                        </ul>
+
+                        <pre><code class="go">func searchRange(nums []int, target int) []int {
+	if len(nums) == 0 {
+		return []int{-1, -1}
+	}
+
+	left, right := 0, len(nums)-1
+
+	for left <= right {
+		mid := left + (right-left)/2
+
+		if nums[mid] == target {
+			// считаем элементы слева и справа
+			l, r := mid, mid
+			for {
+				if l >= 0 && nums[l] == target {
+					l--
+				}
+				if r < len(nums) && nums[r] == target {
+					r++
+				}
+
+				if (l < 0 || nums[l] != target) && (r == len(nums) || nums[r] != target) {
+					return []int{l + 1, r - 1}
+				}
+			}
+		}
+
+		if nums[mid] < target {
+			left = mid + 1
+		} else {
+			right = mid - 1
+		}
+	}
+
+	return []int{-1, -1}
+}</code>
+                                        </pre>
+                    </div>
+                </div>
+            </div>
+            <div class="accordion-item">
+                <h2 class="accordion-header">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#q11">
+                        Поиск K ближайших элементов
+                    </button>
+                </h2>
+                <div id="q11" class="accordion-collapse collapse" data-bs-parent="#accordionBlock">
+                    <div class="accordion-body">
+                        <p>Функция <code>findClosestElements</code> находит K ближайших элементов к заданному числу X в
+                            отсортированном массиве.</p>
+                        <h3>Алгоритм решения</h3>
+                        <ol>
+                            <li>Проверка граничных условий:
+                                <ul>
+                                    <li>Если длина массива меньше K или массив пуст, возвращаем весь массив</li>
+                                    <li>Если X меньше или равно первому элементу, возвращаем первые K элементов</li>
+                                    <li>Если X больше или равно последнему элементу, возвращаем последние K элементов
+                                    </li>
+                                </ul>
+                            </li>
+                            <li>Бинарный поиск:
+                                <ul>
+                                    <li>Инициализируем левую границу поиска как 0, правую как len(arr) - K</li>
+                                    <li>Выполняем бинарный поиск, пока left < right:
+                                        <ul>
+                                            <li>Находим середину диапазона</li>
+                                            <li>Сравниваем расстояния от X до элементов arr[mid] и arr[mid+K]</li>
+                                            <li>Сдвигаем границы поиска в зависимости от результата сравнения</li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li>Возвращаем подмассив длины K, начиная с найденной позиции</li>
+                        </ol>
+                        <ul>
+                            <li><strong>Временная сложность:</strong> O(log(n-k) + k)
+                                <ul>
+                                    <li>log(n-k) - для бинарного поиска</li>
+                                    <li>k - для формирования результирующего массива</li>
+                                </ul>
+                            </li>
+                            <li><strong>Пространственная сложность:</strong> O(k)
+                                <ul>
+                                    <li>Для хранения результирующего массива</li>
+                                </ul>
+                            </li>
+                        </ul>
+
+                        <pre><code class="go">func findClosestElements(arr []int, k int, x int) []int {
+	if len(arr) < k || len(arr) == 0 {
+		return arr
+	}
+
+	left, right := 0, len(arr)-k // ставим окно поиска
+
+	// Проверка граничных случаев
+	if x <= arr[0] { // 0 элемент больше x то берём первые k элементов
+		return arr[:k]
+	}
+	if x >= arr[len(arr)-1] { // если последний элемент больше x, то берём последние k элементов
+		return arr[len(arr)-k:]
+	}
+
+	// Бинарный поиск
+	for left < right {
+		mid := left + (right-left)/2
+		if x-arr[mid] > arr[mid+k]-x { // если x больше среднего, двигаем в правую часть
+			left = mid + 1
+		} else {
+			right = mid
+		}
+	}
+	return arr[left : left+k]
+}</code>
+                                        </pre>
+                    </div>
+                </div>
+            </div>
+            <div class="accordion-item">
+                <h2 class="accordion-header">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#q12">
+                        Группировка анаграмм
+                    </button>
+                </h2>
+                <div id="q12" class="accordion-collapse collapse" data-bs-parent="#accordionBlock">
+                    <div class="accordion-body">
+                        <p>Функция <code>groupAnagrams</code> группирует анаграммы из заданного списка строк. Анаграммы
+                            - это слова, состоящие из одних и тех же букв, но в разном порядке.</p>
+                        <h3>Алгоритм решения</h3>
+                        <ol>
+                            <li>Инициализация:
+                                <ul>
+                                    <li>Создаем пустую карту (map) для хранения групп анаграмм</li>
+                                </ul>
+                            </li>
+                            <li>Обработка каждой строки:
+                                <ul>
+                                    <li>Преобразуем строку в слайс рун</li>
+                                    <li>Сортируем символы строки</li>
+                                    <li>Используем отсортированную строку как ключ в карте</li>
+                                    <li>Добавляем исходную строку в соответствующую группу в карте</li>
+                                </ul>
+                            </li>
+                            <li>Формирование результата:
+                                <ul>
+                                    <li>Преобразуем карту в слайс слайсов строк</li>
+                                </ul>
+                            </li>
+                            <li>Возвращаем результат</li>
+                        </ol>
+                        <ul>
+                            <li><strong>Временная сложность:</strong> O(n * k * log(k))
+                                <ul>
+                                    <li>n - количество строк в исходном слайсе</li>
+                                    <li>k - максимальная длина строки</li>
+                                    <li>Сортировка каждой строки занимает O(k * log(k))</li>
+                                </ul>
+                            </li>
+                            <li><strong>Пространственная сложность:</strong> O(n * k)
+                                <ul>
+                                    <li>Для хранения всех строк в карте и результирующем слайсе</li>
+                                </ul>
+                            </li>
+                        </ul>
+
+                        <pre><code class="go">func groupAnagrams(strs []string) [][]string {
+	groups := make(map[string][]string)
+
+	for _, str := range strs {
+		// Сортируем символы строки для получения ключа
+		chars := []rune(str)
+		slices.Sort(chars)
+		key := string(chars)
+
+		// Добавляем строку в соответствующую группу
+		groups[key] = append(groups[key], str)
+	}
+
+	// Преобразуем map в slice
+	result := make([][]string, 0, len(groups))
+	for _, group := range groups {
+		result = append(result, group)
+	}
+
+	return result
+}</code>
+                                        </pre>
+                    </div>
+                </div>
+            </div>
+            <div class="accordion-item">
+                <h2 class="accordion-header">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#q13">
+                        Поиск самого длинного подмассива единиц после удаления одного элемента
+                    </button>
+                </h2>
+                <div id="q13" class="accordion-collapse collapse" data-bs-parent="#accordionBlock">
+                    <div class="accordion-body">
+                        <p>Функция <code>longestSubarray</code> находит длину самого длинного подмассива, состоящего
+                            только из единиц, после удаления одного элемента из исходного массива.</p>
+                        <h3>Алгоритм решения</h3>
+                        <ol>
+                            <li>Инициализация переменных:
+                                <ul>
+                                    <li><code>left</code> - левая граница окна</li>
+                                    <li><code>zeros</code> - количество нулей в текущем окне</li>
+                                    <li><code>maxLen</code> - максимальная длина найденного подмассива</li>
+                                </ul>
+                            </li>
+                            <li>Проход по массиву с использованием техники "скользящего окна":
+                                <ul>
+                                    <li>Расширяем окно вправо</li>
+                                    <li>Если встречаем ноль, увеличиваем счетчик нулей</li>
+                                    <li>Если в окне больше одного нуля, сужаем окно слева</li>
+                                    <li>Обновляем максимальную длину подмассива</li>
+                                </ul>
+                            </li>
+                            <li>Обработка особого случая:
+                                <ul>
+                                    <li>Если максимальная длина равна длине исходного массива, вычитаем 1</li>
+                                </ul>
+                            </li>
+                            <li>Возвращаем результат</li>
+                        </ol>
+                        <ul>
+                            <li><strong>Временная сложность:</strong> O(n)
+                                <ul>
+                                    <li>n - количество элементов в массиве</li>
+                                    <li>Каждый элемент обрабатывается не более двух раз (при расширении и сужении
+                                        окна)
+                                    </li>
+                                </ul>
+                            </li>
+                            <li><strong>Пространственная сложность:</strong> O(1)
+                                <ul>
+                                    <li>Используется постоянное количество дополнительной памяти</li>
+                                </ul>
+                            </li>
+                        </ul>
+
+                        <pre><code class="go">func longestSubarray(nums []int) int {
+	left, zeros, maxLen := 0, 0, 0
+
+	for right := 0; right < len(nums); right++ {
+		if nums[right] == 0 {
+			zeros++
+		}
+
+		// Сужаем окно, если в нем больше одного нуля
+		for zeros > 1 {
+			if nums[left] == 0 {
+				zeros--
+			}
+			left++
+		}
+
+		// Обновляем максимальную длину
+		// Вычитаем 1, так как нужно удалить один элемент
+		maxLen = max(maxLen, right-left)
+	}
+
+	// Если maxLen равен длине массива, возвращаем maxLen-1,
+	// иначе возвращаем maxLen
+	if maxLen == len(nums) {
+		return maxLen - 1
+	}
+	return maxLen
+}</code>
+                                        </pre>
+                    </div>
+                </div>
+            </div>
+            <div class="accordion-item">
+                <h2 class="accordion-header">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#q14">
+                        Поиск максимального количества последовательных единиц (с заменой k нулей)
+                    </button>
+                </h2>
+                <div id="q14" class="accordion-collapse collapse" data-bs-parent="#accordionBlock">
+                    <div class="accordion-body">
+                        <p>Функция <code>longestOnes</code> находит длину самого длинного подмассива, состоящего только
+                            из единиц, после замены не более k нулей на единицы.</p>
+                        <h3>Алгоритм решения</h3>
+                        <ol>
+                            <li>Инициализация переменных:
+                                <ul>
+                                    <li><code>left</code> - левая граница окна</li>
+                                    <li><code>maxOnes</code> - максимальная длина найденного подмассива</li>
+                                </ul>
+                            </li>
+                            <li>Проход по массиву с использованием техники "скользящего окна":
+                                <ul>
+                                    <li>Расширяем окно вправо</li>
+                                    <li>Если встречаем ноль, уменьшаем k</li>
+                                    <li>Если k становится отрицательным, сдвигаем левую границу окна</li>
+                                    <li>Обновляем максимальную длину подмассива</li>
+                                </ul>
+                            </li>
+                            <li>Возвращаем результат</li>
+                        </ol>
+                        <ul>
+                            <li><strong>Временная сложность:</strong> O(n)
+                                <ul>
+                                    <li>n - количество элементов в массиве</li>
+                                    <li>Каждый элемент обрабатывается не более двух раз (при расширении и сужении
+                                        окна)
+                                    </li>
+                                </ul>
+                            </li>
+                            <li><strong>Пространственная сложность:</strong> O(1)
+                                <ul>
+                                    <li>Используется постоянное количество дополнительной памяти</li>
+                                </ul>
+                            </li>
+                        </ul>
+
+
+                        <pre><code class="go">func longestOnes(nums []int, k int) int {
+	left, maxOnes := 0, 0
+	for right := 0; right < len(nums); right++ {
+		if nums[right] == 0 {
+			k--
+		}
+		if k < 0 {
+			if nums[left] == 0 {
+				k++
+			}
+			left++
+		}
+		maxOnes = max(maxOnes, right-left+1)
+	}
+	return maxOnes
+}</code>
+                                        </pre>
+                    </div>
+                </div>
+            </div>
+            <div class="accordion-item">
+                <h2 class="accordion-header">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#q15">
+                        Максимизация расстояния до ближайшего человека
+                    </button>
+                </h2>
+                <div id="q15" class="accordion-collapse collapse" data-bs-parent="#accordionBlock">
+                    <div class="accordion-body">
+                        <p>Функция <code>maxDistToClosest</code> находит максимальное расстояние, на котором можно сесть
+                            от ближайшего человека в ряду сидений, представленном массивом <code>seats</code>, где 1
+                            означает занятое место, а 0 - свободное.</p>
+                        <h3>Алгоритм решения</h3>
+                        <ol>
+                            <li>Инициализация переменных:
+                                <ul>
+                                    <li><code>n</code> - длина массива seats</li>
+                                    <li><code>left</code> - индекс последнего занятого места слева (изначально -1)</li>
+                                    <li><code>maxDist</code> - максимальное найденное расстояние</li>
+                                </ul>
+                            </li>
+                            <li>Проход по массиву seats:
+                                <ul>
+                                    <li>Если встречаем занятое место (1):
+                                        <ul>
+                                            <li>Если это первое занятое место, проверяем расстояние от начала ряда</li>
+                                            <li>Иначе вычисляем расстояние между текущим и предыдущим занятым местом
+                                            </li>
+                                            <li>Обновляем <code>maxDist</code>, если найдено большее расстояние</li>
+                                            <li>Обновляем <code>left</code></li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li>После прохода проверяем расстояние от последнего занятого места до конца ряда</li>
+                            <li>Возвращаем максимальное найденное расстояние</li>
+                        </ol>
+                        <ul>
+                            <li><strong>Временная сложность:</strong> O(n)
+                                <ul>
+                                    <li>n - длина массива seats</li>
+                                    <li>Алгоритм проходит по массиву ровно один раз</li>
+                                </ul>
+                            </li>
+                            <li><strong>Пространственная сложность:</strong> O(1)
+                                <ul>
+                                    <li>Используется постоянное количество дополнительных переменных</li>
+                                </ul>
+                            </li>
+                        </ul>
+                        <pre><code class="go">func maxDistToClosest(seats []int) int {
+	n := len(seats)
+	left := -1 // индекс последнего занятого места слева
+	maxDist := 0
+
+	for i := 0; i < n; i++ {
+		if seats[i] == 1 {
+			// Если это первое занятое место, проверяем расстояние от начала
+			if left == -1 {
+				maxDist = i
+			} else {
+				// Иначе проверяем расстояние между двумя занятыми местами
+				maxDist = max(maxDist, (i-left)/2)
+			}
+			left = i
+		}
+	}
+
+	// Проверяем расстояние от последнего занятого места до конца
+	maxDist = max(maxDist, n-1-left)
+
+	return maxDist
+}</code>
+                                        </pre>
+                    </div>
+                </div>
+            </div>
+            <div class="accordion-item">
+                <h2 class="accordion-header">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#q16">
+                        Поиск медианы двух отсортированных массивов
+                    </button>
+                </h2>
+                <div id="q16" class="accordion-collapse collapse" data-bs-parent="#accordionBlock">
+                    <div class="accordion-body">
+                        <p>Функция <code>findMedianSortedArrays</code> находит медиану двух отсортированных массивов
+                            <code>nums1</code> и <code>nums2</code>.</p>
+                        <h3>Алгоритм решения</h3>
+                        <ol>
+                            <li>Обработка краевых случаев:
+                                <ul>
+                                    <li>Если один из массивов пустой, возвращается медиана другого массива</li>
+                                </ul>
+                            </li>
+                            <li>Оптимизация:
+                                <ul>
+                                    <li>Обеспечение того, что <code>nums1</code> - более короткий массив</li>
+                                </ul>
+                            </li>
+                            <li>Бинарный поиск по более короткому массиву:
+                                <ul>
+                                    <li>Поиск правильной точки разделения в обоих массивах</li>
+                                    <li>Сравнение элементов на границах разделения</li>
+                                    <li>Корректировка точки разделения в зависимости от сравнения</li>
+                                </ul>
+                            </li>
+                            <li>Вычисление медианы:
+                                <ul>
+                                    <li>Для четного общего количества элементов - среднее двух средних элементов</li>
+                                    <li>Для нечетного - максимальный из двух "левых" элементов</li>
+                                </ul>
+                            </li>
+                        </ol>
+                        <ul>
+                            <li><strong>Временная сложность:</strong> O(log(min(m, n)))
+                                <ul>
+                                    <li>m и n - длины массивов nums1 и nums2 соответственно</li>
+                                    <li>Бинарный поиск выполняется по более короткому массиву</li>
+                                </ul>
+                            </li>
+                            <li><strong>Пространственная сложность:</strong> O(1)
+                                <ul>
+                                    <li>Используется постоянное количество дополнительной памяти</li>
+                                </ul>
+                            </li>
+                        </ul>
+                        <pre><code class="go">func findMedianSortedArrays(nums1 []int, nums2 []int) float64 {
+	// Обработка случая, когда один из массивов пустой
+	if len(nums1) == 0 {
+		return medianOfArray(nums2)
+	}
+	if len(nums2) == 0 {
+		return medianOfArray(nums1)
+	}
+
+	// Мы всегда работаем с меньшим массивом как с nums1 для оптимизации.
+	if len(nums1) > len(nums2) {
+		nums1, nums2 = nums2, nums1
+	}
+	l1, l2 := len(nums1), len(nums2)
+
+	// бинарный поиск
+	left, right := 0, l1
+	for left <= right {
+		cur1 := (left + right) / 2
+		cur2 := (l1+l2+1)/2 - cur1
+		/* Вычисляем соответствующую точку разделения для второго массива: cur2 = (l1 + l2 + 1) / 2 - cur1
+		Это обеспечивает, что левая часть обоих массивов всегда содержит (l1 + l2 + 1) / 2 элементов */
+		first1 := getVal(nums1, cur1, math.MaxInt)
+		last1 := getVal(nums1, cur1-1, math.MinInt)
+		first2 := getVal(nums2, cur2, math.MaxInt)
+		last2 := getVal(nums2, cur2-1, math.MinInt)
+
+		switch {
+		case last1 <= first2 && last2 <= first1:
+			// чётное кол-во или нет
+			if (l1+l2)%2 == 0 {
+				return (float64(max(last1, last2)) + float64(min(first1, first2))) / 2.0
+			}
+			return float64(max(last1, last2))
+		case last1 > first2:
+			right = cur1 - 1
+		default:
+			left = cur1 + 1
+		}
+	}
+
+	return 0.0
+}
+
+/*
+*
+Функция getVal используется для безопасного получения этих значений,
+возвращая минимальное или максимальное целое число, если индекс выходит за границы массива.
+*/
+func getVal(nums []int, index int, defaultVal int) int {
+	if index < 0 || index >= len(nums) {
+		return defaultVal
+	}
+	return nums[index]
+}
+
+func medianOfArray(nums []int) float64 {
+	n := len(nums)
+	if n%2 == 0 {
+		return float64(nums[n/2-1]+nums[n/2]) / 2.0
+	}
+	return float64(nums[n/2])
+}</code>
+                                        </pre>
+                    </div>
+                </div>
+            </div>
+            <div class="accordion-item">
+                <h2 class="accordion-header">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#q17">
+                        Объединение пересекающихся интервалов
+                    </button>
+                </h2>
+                <div id="q17" class="accordion-collapse collapse" data-bs-parent="#accordionBlock">
+                    <div class="accordion-body">
+                        <p>Функция <code>findNonOverlappingIntervals</code> принимает массив интервалов и возвращает
+                            новый массив, где все пересекающиеся интервалы объединены.</p>
+                        <h3>Алгоритм решения</h3>
+                        <ol>
+                            <li>Проверка на пустой входной массив</li>
+                            <li>Сортировка интервалов по начальной точке (при равенстве - по конечной точке)</li>
+                            <li>Итерация по отсортированным интервалам:
+                                <ul>
+                                    <li>Если текущий интервал пересекается с предыдущим, объединяем их</li>
+                                    <li>Если не пересекается, добавляем предыдущий интервал в результат и начинаем
+                                        новый
+                                    </li>
+                                </ul>
+                            </li>
+                            <li>Добавление последнего обработанного интервала в результат</li>
+                        </ol>
+                        <ul>
+                            <li><strong>Временная сложность:</strong> O(n log n)
+                                <ul>
+                                    <li>Сортировка интервалов занимает O(n log n)</li>
+                                    <li>Последующая итерация по интервалам занимает O(n)</li>
+                                </ul>
+                            </li>
+                            <li><strong>Пространственная сложность:</strong> O(n)
+                                <ul>
+                                    <li>В худшем случае, когда нет пересечений, результирующий массив будет такого же
+                                        размера, как входной
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                        <pre><code class="go">func findNonOverlappingIntervals(intervals [][]int) [][]int {
+	if len(intervals) == 0 {
+		return [][]int{}
+	}
+
+	slices.SortFunc(intervals, func(i, j []int) int { // log n
+		switch {
+		case i[0] == j[0] && i[1] == j[1]:
+			return 0
+		case i[0] < j[0] || (i[0] == j[0] && i[1] < j[1]):
+			return -1
+		default:
+			return 1
+		}
+	})
+
+	var resultIntervals [][]int
+	currentInterval := intervals[0]
+	for _, interval := range intervals[1:] {
+		switch {
+		case interval[0] <= currentInterval[1]: // [1, 3] in [2, 6]
+			currentInterval[1] = max(currentInterval[1], interval[1])
+		case interval[0] > currentInterval[1]: // [1, 3] in [5, 7]
+			resultIntervals = append(resultIntervals, currentInterval)
+			currentInterval = interval
+		}
+	}
+	resultIntervals = append(resultIntervals, currentInterval)
+
+	return resultIntervals
+}</code>
+                                        </pre>
+                    </div>
+                </div>
+            </div>
+            <div class="accordion-item">
+                <h2 class="accordion-header">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#q18">
+                        Слияние K отсортированных массивов
+                    </button>
+                </h2>
+                <div id="q18" class="accordion-collapse collapse" data-bs-parent="#accordionBlock">
+                    <div class="accordion-body">
+                        <p>Функция <code>MergeKSortedArrays</code> объединяет K отсортированных массивов в один
+                            отсортированный массив.</p>
+                        <h3>Алгоритм решения</h3>
+                        <ol>
+                            <li>Инициализация результирующего массива и массива указателей для каждого входного
+                                массива
+                            </li>
+                            <li>Итеративный процесс:
+                                <ul>
+                                    <li>Поиск минимального элемента среди текущих элементов всех массивов</li>
+                                    <li>Добавление найденного минимального элемента в результат</li>
+                                    <li>Продвижение указателя для массива, из которого был взят минимальный элемент</li>
+                                </ul>
+                            </li>
+                            <li>Повторение процесса, пока все элементы не будут обработаны</li>
+                        </ol>
+                        <ul>
+                            <li><strong>Временная сложность:</strong> O(N * k)
+                                <ul>
+                                    <li>N - общее количество элементов во всех массивах</li>
+                                    <li>k - количество массивов</li>
+                                    <li>На каждой итерации происходит поиск минимума среди k элементов</li>
+                                </ul>
+                            </li>
+                            <li><strong>Пространственная сложность:</strong> O(N + k)
+                                <ul>
+                                    <li>O(N) для результирующего массива</li>
+                                    <li>O(k) для массива указателей</li>
+                                </ul>
+                            </li>
+                        </ul>
+                        <pre><code class="go">func MergeKSortedArrays(arrays [][]int) []int {
+	result := make([]int, 0)
+	points := make([]int, len(arrays))
+
+	for {
+		minVal := 101
+		minIdx := -1
+
+		// Ищем минимальный индекс
+		for i, arr := range arrays {
+			if points[i] < len(arr) &&
+				(minIdx < 0 || arr[points[i]] < minVal) {
+				minVal = arr[points[i]]
+				minIdx = i
+			}
+		}
+
+		// Если не нашли минимальный элемент, значит все массивы обработаны
+		if minIdx == -1 {
+			break
+		}
+
+		// Добавляем минимальный элемент в результат и двигаем указатель
+		result = append(result, minVal)
+		points[minIdx]++
+	}
+
+	return result
+}</code>
+                                        </pre>
+                    </div>
+                </div>
+            </div>
+            <div class="accordion-item">
+                <h2 class="accordion-header">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#q19">
+                        Произведение элементов массива, кроме самого себя
+                    </button>
+                </h2>
+                <div id="q19" class="accordion-collapse collapse" data-bs-parent="#accordionBlock">
+                    <div class="accordion-body">
+                        <p>Функция <code>productExceptSelf</code> вычисляет для каждого элемента массива произведение
+                            всех остальных элементов, не используя операцию деления.</p>
+                        <h3>Алгоритм решения</h3>
+                        <ol>
+                            <li>Инициализация результирующего массива <code>answer</code></li>
+                            <li>Вычисление префиксных произведений:
+                                <ul>
+                                    <li>Проход слева направо</li>
+                                    <li>Каждый элемент <code>answer[i]</code> содержит произведение всех элементов слева
+                                        от <code>nums[i]</code></li>
+                                </ul>
+                            </li>
+                            <li>Вычисление суффиксных произведений и формирование окончательного результата:
+                                <ul>
+                                    <li>Проход справа налево</li>
+                                    <li>Умножение каждого элемента <code>answer[i]</code> на суффиксное произведение
+                                    </li>
+                                    <li>Обновление суффиксного произведения</li>
+                                </ul>
+                            </li>
+                        </ol>
+                        <ul>
+                            <li><strong>Временная сложность:</strong> O(n)
+                                <ul>
+                                    <li>Два прохода по массиву: один слева направо, другой справа налево</li>
+                                </ul>
+                            </li>
+                            <li><strong>Пространственная сложность:</strong> O(1)
+                                <ul>
+                                    <li>Не считая выходной массив, используется только одна дополнительная переменная
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                        <pre><code class="go">func productExceptSelf(nums []int) []int {
+	n := len(nums)
+	answer := make([]int, n)
+
+	// Инициализируем первый элемент answer как 1
+	answer[0] = 1
+
+	// Вычисляем префиксное произведение
+	for i := 1; i < n; i++ {
+		answer[i] = answer[i-1] * nums[i-1]
+	}
+
+	// Вычисляем суффиксное произведение и одновременно обновляем answer
+	suffixProduct := 1
+	for i := n - 1; i >= 0; i-- {
+		answer[i] *= suffixProduct
+		suffixProduct *= nums[i]
+	}
+
+	return answer
+}</code>
+                                        </pre>
+                    </div>
+                </div>
+            </div>
+            <div class="accordion-item">
+                <h2 class="accordion-header">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#q20">
+                        Поиск в повернутом отсортированном массиве
+                    </button>
+                </h2>
+                <div id="q20" class="accordion-collapse collapse" data-bs-parent="#accordionBlock">
+                    <div class="accordion-body">
+                        <p>Функция <code>search</code> выполняет поиск заданного элемента <code>target</code> в
+                            повернутом отсортированном массиве <code>nums</code>.</p>
+                        <h3>Алгоритм решения</h3>
+                        <ol>
+                            <li>Инициализация указателей <code>left</code> и <code>right</code> на начало и конец
+                                массива
+                            </li>
+                            <li>Бинарный поиск с модификацией:
+                                <ul>
+                                    <li>Нахождение среднего элемента <code>mid</code></li>
+                                    <li>Если <code>nums[mid] == target</code>, возвращаем <code>mid</code></li>
+                                    <li>Определение, какая половина массива отсортирована:
+                                        <ul>
+                                            <li>Если левая половина отсортирована (<code>nums[left] <= nums[mid]</code>):
+                                                <ul>
+                                                    <li>Если <code>target</code> находится в левой половине, сужаем
+                                                        поиск влево
+                                                    </li>
+                                                    <li>Иначе сужаем поиск вправо</li>
+                                                </ul>
+                                            </li>
+                                            <li>Если правая половина отсортирована:
+                                                <ul>
+                                                    <li>Если <code>target</code> находится в правой половине, сужаем
+                                                        поиск вправо
+                                                    </li>
+                                                    <li>Иначе сужаем поиск влево</li>
+                                                </ul>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li>Если элемент не найден, возвращаем -1</li>
+                        </ol>
+                        <ul>
+                            <li><strong>Временная сложность:</strong> O(log n)
+                                <ul>
+                                    <li>Используется модифицированный бинарный поиск</li>
+                                    <li>На каждой итерации область поиска уменьшается вдвое</li>
+                                </ul>
+                            </li>
+                            <li><strong>Пространственная сложность:</strong> O(1)
+                                <ul>
+                                    <li>Используется фиксированное количество дополнительных переменных</li>
+                                </ul>
+                            </li>
+                        </ul>
+                        <pre><code class="go">func search(nums []int, target int) int {
+	left, right := 0, len(nums)-1
+
+	for left <= right {
+		mid := left + (right-left)/2
+
+		if nums[mid] == target {
+			return mid
+		}
+
+		// Левая половина отсортирована
+		if nums[left] <= nums[mid] {
+			if target >= nums[left] && target < nums[mid] {
+				right = mid - 1
+			} else {
+				left = mid + 1
+			}
+		} else { // Правая половина отсортирована
+			if target > nums[mid] && target <= nums[right] {
+				left = mid + 1
+			} else {
+				right = mid - 1
+			}
+		}
+	}
+
+	return -1 // Элемент не найден
+}</code>
+                                        </pre>
+                    </div>
+                </div>
+            </div>
+            <div class="accordion-item">
+                <h2 class="accordion-header">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#q21">
+                        Подсчет подмассивов с заданной суммой
+                    </button>
+                </h2>
+                <div id="q21" class="accordion-collapse collapse" data-bs-parent="#accordionBlock">
+                    <div class="accordion-body">
+                        <p>Функция <code>subarraySum</code> подсчитывает количество подмассивов в заданном массиве
+                            <code>nums</code>, сумма элементов которых равна заданному значению <code>k</code>.</p>
+                        <h3>Алгоритм решения</h3>
+                        <ol>
+                            <li>Инициализация переменных:
+                                <ul>
+                                    <li><code>count</code> - счетчик подходящих подмассивов</li>
+                                    <li><code>sum</code> - текущая кумулятивная сумма</li>
+                                    <li><code>sumCounts</code> - карта для хранения количества встреченных кумулятивных
+                                        сумм
+                                    </li>
+                                </ul>
+                            </li>
+                            <li>Итерация по элементам массива:
+                                <ul>
+                                    <li>Обновление кумулятивной суммы</li>
+                                    <li>Проверка наличия комплементарной суммы <code>sum-k</code> в карте</li>
+                                    <li>Увеличение счетчика на количество найденных комплементарных сумм</li>
+                                    <li>Обновление количества текущей кумулятивной суммы в карте</li>
+                                </ul>
+                            </li>
+                            <li>Возврат общего количества найденных подмассивов</li>
+                        </ol>
+                        <ul>
+                            <li><strong>Временная сложность:</strong> O(n)
+                                <ul>
+                                    <li>n - количество элементов в массиве</li>
+                                    <li>Один проход по всем элементам массива</li>
+                                </ul>
+                            </li>
+                            <li><strong>Пространственная сложность:</strong> O(n)
+                                <ul>
+                                    <li>В худшем случае, когда все кумулятивные суммы уникальны</li>
+                                    <li>Использование карты для хранения кумулятивных сумм</li>
+                                </ul>
+                            </li>
+                        </ul>
+                        <pre><code class="go">func subarraySum(nums []int, k int) int {
+	count := 0
+	sum := 0
+	sumCounts := make(map[int]int)
+	sumCounts[0] = 1 // Инициализируем для случая, когда подмассив начинается с начала массива
+
+	for _, num := range nums {
+		sum += num
+		if cnt, exists := sumCounts[sum-k]; exists {
+			count += cnt
+		}
+		sumCounts[sum]++
+	}
+
+	return count
+}</code>
+                                        </pre>
+                    </div>
+                </div>
+            </div>
+            <div class="accordion-item">
+                <h2 class="accordion-header">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#q22">
+                        Подсчет подмассивов с суммой, делящейся на K
+                    </button>
+                </h2>
+                <div id="q22" class="accordion-collapse collapse" data-bs-parent="#accordionBlock">
+                    <div class="accordion-body">
+                        <p>Функция <code>subarraysDivByK</code> подсчитывает количество подмассивов в заданном массиве
+                            <code>nums</code>, сумма элементов которых делится на заданное число <code>k</code>.</p>
+                        <h3>Алгоритм решения</h3>
+                        <ol>
+                            <li>Инициализация переменных:
+                                <ul>
+                                    <li><code>count</code> - карта для хранения количества встреченных остатков от
+                                        деления
+                                    </li>
+                                    <li><code>sum</code> - текущая кумулятивная сумма</li>
+                                    <li><code>result</code> - счетчик подходящих подмассивов</li>
+                                </ul>
+                            </li>
+                            <li>Итерация по элементам массива:
+                                <ul>
+                                    <li>Обновление кумулятивной суммы</li>
+                                    <li>Вычисление остатка от деления суммы на k (с обработкой отрицательных чисел)</li>
+                                    <li>Увеличение результата на количество ранее встреченных подмассивов с таким же
+                                        остатком
+                                    </li>
+                                    <li>Обновление количества текущего остатка в карте</li>
+                                </ul>
+                            </li>
+                            <li>Возврат общего количества найденных подмассивов</li>
+                        </ol>
+                        <ul>
+                            <li><strong>Временная сложность:</strong> O(n)
+                                <ul>
+                                    <li>n - количество элементов в массиве</li>
+                                    <li>Один проход по всем элементам массива</li>
+                                </ul>
+                            </li>
+                            <li><strong>Пространственная сложность:</strong> O(min(n, k))
+                                <ul>
+                                    <li>В худшем случае хранятся k различных остатков в карте</li>
+                                    <li>Количество уникальных остатков ограничено значением k</li>
+                                </ul>
+                            </li>
+                        </ul>
+                        <pre><code class="go">func subarraysDivByK(nums []int, k int) int {
+	count := make(map[int]int)
+	count[0] = 1 // Инициализируем для случая, когда вся префиксная сумма делится на k
+	sum := 0
+	result := 0
+
+	for _, num := range nums {
+		sum += num
+		remainder := (sum%k + k) % k // Обрабатываем отрицательные числа
+		result += count[remainder]
+		count[remainder]++
+	}
+
+	return result
+}</code>
+                                        </pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+</div>
+</body>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
+        crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/go.min.js"></script>
+
+<script>hljs.highlightAll();</script>
+</html>
