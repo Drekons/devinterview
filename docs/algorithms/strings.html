@@ -47,6 +47,90 @@
     </header>
     <main>
         <h1>Алгоритмы - Строки</h1>
+        <div class="accordion" id="accordionBlock">
+            <div class="accordion-item">
+                <h2 class="accordion-header">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#anagram">
+                        Анаграмма
+                    </button>
+                </h2>
+                <div id="anagram" class="accordion-collapse collapse" data-bs-parent="#accordionBlock">
+                    <div class="accordion-body">
+                        <p>
+                            Этот код решает задачу проверки, являются ли две строки анаграммами друг друга. <br/>
+                            Анаграммы - это слова или фразы, состоящие из одних и тех же букв, но в разном порядке.
+                        </p>
+                        <div class="accordion" id="accordionBlock1">
+                            <div class="accordion-item">
+                                <h2 class="accordion-header">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                            data-bs-target="#anagram1">
+                                        Алгоритм решения
+                                    </button>
+                                </h2>
+                                <div id="anagram1" class="accordion-collapse collapse" data-bs-parent="#accordionBlock1">
+                                    <div class="accordion-body">
+                                        <ol>
+                                            <li>Сначала проверяется, равны ли длины строк. Если нет, то они не могут
+                                                быть анаграммами.
+                                            </li>
+                                            <li>Создаются два словаря (map) для подсчета частоты встречаемости каждого
+                                                символа в обеих строках.
+                                            </li>
+                                            <li>Проходим по первой строке и заполняем первый словарь.</li>
+                                            <li>Проходим по второй строке и заполняем второй словарь.</li>
+                                            <li>Сравниваем частоты символов в обоих словарях. Если для какого-то символа
+                                                частоты не совпадают, строки не являются анаграммами.
+                                            </li>
+                                            <li>Если все проверки пройдены успешно, строки являются анаграммами.</li>
+                                        </ol>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="accordion-item">
+                                <h2 class="accordion-header">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                            data-bs-target="#anagram_q1">
+                                        Код
+                                    </button>
+                                </h2>
+                                <div id="anagram_q1" class="accordion-collapse collapse" data-bs-parent="#accordionBlock1">
+                                    <div class="accordion-body">
+                                        <code>
+func isAnagram(s1, s2 string) bool {
+	if len(s1) != len(s2) {
+		return false
+	}
+
+	s1Rune := make(map[rune]int)
+	s2Rune := make(map[rune]int)
+
+	for _, r := range s1 {
+		s1Rune[r]++
+	}
+
+	for _, r := range s2 {
+		s2Rune[r]++
+	}
+
+	for r, count := range s1Rune {
+		if count != s2Rune[r] {
+			return false
+		}
+	}
+
+	return true
+}
+                                        </code>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </main>
 </div>
 </body>
