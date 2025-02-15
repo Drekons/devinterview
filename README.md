@@ -6,3 +6,4 @@
 - [Задачи по GO](https://drekons.github.io/devinterview/go_tasks.html)
 - [Базы данных](https://drekons.github.io/devinterview/db.html)
 - [Архитектура](https://drekons.github.io/devinterview/architecture.html)
+- [Алгоритмы GO](https://drekons.github.io/devinterview/algorithms.html)
