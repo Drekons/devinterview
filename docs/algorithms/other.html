@@ -1,0 +1,785 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Архитектура - Другие</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/default.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+</head>
+<body>
+<div class="container">
+    <header>
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="#">DevInterview</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                        aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav">
+                        <li class="nav-item">
+                            <a class="nav-link" href="../php.html">PHP - вопросы</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="../php_tasks.html">PHP - задачи</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="../go.html">Go - вопросы</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="../go_tasks.html">Go - задачи</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="../db.html">Базы данных</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="../architecture.html">Архитектура</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link active" href="../algorithms.html">Алгоритмы</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+    <main>
+        <h1>Алгоритмы - Другие</h1>
+        <div class="accordion" id="accordionBlock">
+            <div class="accordion-item">
+                <h2 class="accordion-header">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#q1">
+                        Реализация очереди с использованием двух стеков
+                    </button>
+                </h2>
+                <div id="q1" class="accordion-collapse collapse" data-bs-parent="#accordionBlock">
+                    <div class="accordion-body">
+                        <p>Код реализует структуру данных очередь (FIFO - First In First Out) с использованием двух
+                            стеков. Это позволяет эмулировать поведение очереди, используя только операции стека (LIFO -
+                            Last In First Out).</p>
+                        <h3>Алгоритм решения</h3>
+                        <ol>
+                            <li>Использование двух стеков: <code>stackPush</code> для добавления элементов и <code>stackPop</code>
+                                для удаления элементов
+                            </li>
+                            <li>При добавлении элемента (Push), он всегда помещается в <code>stackPush</code></li>
+                            <li>При удалении (Pop) или просмотре (Peek) элемента:
+                                <ul>
+                                    <li>Если <code>stackPop</code> пуст, все элементы из <code>stackPush</code>
+                                        перемещаются в <code>stackPop</code> в обратном порядке
+                                    </li>
+                                    <li>Затем операция выполняется с верхним элементом <code>stackPop</code></li>
+                                </ul>
+                            </li>
+                        </ol>
+                        <ul>
+                            <li><code>Constructor()</code>: Создает новую пустую очередь</li>
+                            <li><code>Push(x int)</code>: Добавляет элемент в конец очереди</li>
+                            <li><code>Pop() int</code>: Удаляет и возвращает элемент из начала очереди</li>
+                            <li><code>Peek() int</code>: Возвращает элемент из начала очереди без удаления</li>
+                            <li><code>Empty() bool</code>: Проверяет, пуста ли очередь</li>
+                            <li><code>PeekPop()</code>: Вспомогательный метод для перемещения элементов между стеками
+                            </li>
+                        </ul>
+                        <ul>
+                            <li><strong>Временная сложность:</strong>
+                                <ul>
+                                    <li>Push: O(1) (амортизированная)</li>
+                                    <li>Pop: O(1) (амортизированная)</li>
+                                    <li>Peek: O(1) (амортизированная)</li>
+                                    <li>Empty: O(1)</li>
+                                </ul>
+                            </li>
+                            <li><strong>Пространственная сложность:</strong> O(n), где n - количество элементов в
+                                очереди
+                            </li>
+                        </ul>
+
+                        <pre><code class="go">type MyQueue struct {
+    stackPush []int
+    stackPop  []int
+}
+
+func Constructor() MyQueue {
+    return MyQueue{}
+}
+
+func (this *MyQueue) Push(x int) {
+    this.stackPush = append(this.stackPush, x)
+}
+
+func (this *MyQueue) Pop() int {
+    this.PeekPop()
+    if len(this.stackPop) == 0 {
+        return 0 // или можно вернуть ошибку, если очередь пуста
+    }
+    val := this.stackPop[len(this.stackPop)-1]
+    this.stackPop = this.stackPop[:len(this.stackPop)-1]
+    return val
+}
+
+func (this *MyQueue) Peek() int {
+    this.PeekPop()
+    if len(this.stackPop) == 0 {
+        return 0 // или можно вернуть ошибку, если очередь пуста
+    }
+    return this.stackPop[len(this.stackPop)-1]
+}
+
+func (this *MyQueue) Empty() bool {
+    return len(this.stackPush) == 0 && len(this.stackPop) == 0
+}
+
+// PeekPop перемещает элементы из stackPush в stackPop, если stackPop пуст
+func (this *MyQueue) PeekPop() {
+    if len(this.stackPop) == 0 {
+        for len(this.stackPush) > 0 {
+            this.stackPop = append(this.stackPop, this.stackPush[len(this.stackPush)-1])
+            this.stackPush = this.stackPush[:len(this.stackPush)-1]
+        }
+    }
+}</code>
+                                        </pre>
+                    </div>
+                </div>
+            </div>
+            <div class="accordion-item">
+                <h2 class="accordion-header">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#q2">
+                        Счетчик недавних вызовов
+                    </button>
+                </h2>
+                <div id="q2" class="accordion-collapse collapse" data-bs-parent="#accordionBlock">
+                    <div class="accordion-body">
+                        <p>Этот код реализует структуру данных <code>RecentCounter</code>, которая отслеживает
+                            количество вызовов (пингов) за последние 3000 миллисекунд.</p>
+                        <h3>Алгоритм решения</h3>
+                        <ol>
+                            <li>Хранение всех временных меток вызовов в слайсе <code>requests</code></li>
+                            <li>При каждом вызове <code>Ping</code>:
+                                <ul>
+                                    <li>Добавление новой временной метки в конец слайса</li>
+                                    <li>Удаление всех временных меток, которые старше чем (t - 3000)</li>
+                                    <li>Возврат количества оставшихся элементов в слайсе</li>
+                                </ul>
+                            </li>
+                        </ol>
+
+                        <ul>
+                            <li><code>Constructor()</code>: Инициализирует пустой слайс для хранения временных меток
+                            </li>
+                            <li><code>Ping(t int)</code>:
+                                <ul>
+                                    <li>Добавляет новую временную метку t</li>
+                                    <li>Использует цикл для нахождения индекса первого элемента в пределах 3000 мс</li>
+                                    <li>Обрезает слайс, удаляя старые элементы</li>
+                                    <li>Возвращает количество элементов в обновленном слайсе</li>
+                                </ul>
+                            </li>
+                        </ul>
+
+                        <ul>
+                            <li><strong>Временная сложность:</strong>
+                                <ul>
+                                    <li>В худшем случае: O(n), где n - количество элементов в слайсе</li>
+                                    <li>Амортизированная: O(1), так как каждый элемент добавляется и удаляется только
+                                        один раз
+                                    </li>
+                                </ul>
+                            </li>
+                            <li><strong>Пространственная сложность:</strong> O(m), где m - максимальное количество
+                                вызовов за 3000 мс
+                            </li>
+                        </ul>
+
+                        <pre><code class="go">type RecentCounter struct {
+	requests []int
+}
+
+func Constructor() RecentCounter {
+	return RecentCounter{
+		requests: []int{},
+	}
+}
+
+func (this *RecentCounter) Ping(t int) int {
+	this.requests = append(this.requests, t)
+
+	// Удаляем запросы старше 3000 мс
+	idx := -1
+	for len(this.requests) > 0 && this.requests[idx+1] < t-3000 {
+		idx++
+	}
+
+	if idx >= 0 {
+		this.requests = this.requests[idx+1:]
+	}
+
+	return len(this.requests)
+}</code>
+                                        </pre>
+                    </div>
+                </div>
+            </div>
+            <div class="accordion-item">
+                <h2 class="accordion-header">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#q3">
+                        Восстановление маршрута путешествия
+                    </button>
+                </h2>
+                <div id="q3" class="accordion-collapse collapse" data-bs-parent="#accordionBlock">
+                    <div class="accordion-body">
+                        <p>Функция <code>findItinerary</code> восстанавливает маршрут путешествия из списка авиабилетов,
+                            начиная с аэропорта "JFK" и используя все билеты ровно один раз.</p>
+                        <h3>Алгоритм решения</h3>
+                        <ul>
+                            <li>Построение графа:
+                                <ul>
+                                    <li>Использование map для хранения списка смежности</li>
+                                    <li>Ключ - аэропорт отправления, значение - список аэропортов назначения</li>
+                                </ul>
+                            </li>
+                            <li>Сортировка пунктов назначения:
+                                <ul>
+                                    <li>Обеспечивает выбор лексикографически наименьшего маршрута</li>
+                                </ul>
+                            </li>
+                            <li>Модифицированный DFS:
+                                <ul>
+                                    <li>Рекурсивно обходит граф, удаляя использованные рейсы</li>
+                                    <li>Добавляет аэропорты в начало результирующего списка (обратный порядок)</li>
+                                </ul>
+                            </li>
+                        </ul>
+                        <ul>
+                            <li><strong>Временная сложность:</strong> O(N * log N), где N - количество билетов
+                                <ul>
+                                    <li>Построение графа: O(N)</li>
+                                    <li>Сортировка пунктов назначения: O(N * log N)</li>
+                                    <li>DFS: O(N)</li>
+                                </ul>
+                            </li>
+                            <li><strong>Пространственная сложность:</strong> O(N)
+                                <ul>
+                                    <li>Для хранения графа и результирующего маршрута</li>
+                                </ul>
+                            </li>
+                        </ul>
+                        <pre><code class="go">func findItinerary(tickets [][]string) []string {
+	graph := make(map[string][]string)
+
+	// Построение графа
+	for _, ticket := range tickets {
+		from, to := ticket[0], ticket[1]
+		graph[from] = append(graph[from], to)
+	}
+
+	// Сортировка пунктов назначения в лексикографическом порядке
+	for _, destinations := range graph {
+		sort.Strings(destinations)
+	}
+
+	result := make([]string, 0)
+
+	var dfs func(airport string)
+	dfs = func(airport string) {
+		for len(graph[airport]) > 0 {
+			nextDest := graph[airport][0]
+			graph[airport] = graph[airport][1:]
+			dfs(nextDest)
+		}
+		result = append([]string{airport}, result...)
+	}
+
+	dfs("JFK")
+
+	return result
+}</code>
+                                        </pre>
+                    </div>
+                </div>
+            </div>
+            <div class="accordion-item">
+                <h2 class="accordion-header">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#q4">
+                        Наименьшее количество идеальных квадратов
+                    </button>
+                </h2>
+                <div id="q4" class="accordion-collapse collapse" data-bs-parent="#accordionBlock">
+                    <div class="accordion-body">
+                        <p>Эта функция <code>numSquares</code> находит наименьшее количество квадратов целых чисел,
+                            сумма которых равна заданному положительному целому числу n.</p>
+                        <h3>Алгоритм решения</h3>
+                        <ol>
+                            <li>Использование динамического программирования</li>
+                            <li>Создание массива <code>dp</code> длиной n+1 для хранения промежуточных результатов</li>
+                            <li>Итерация от 1 до n:
+                                <ul>
+                                    <li>Для каждого числа i находим минимальное количество квадратов, необходимое для
+                                        его составления
+                                    </li>
+                                    <li>Проверяем все возможные квадраты j*j, не превышающие i</li>
+                                    <li>Обновляем минимальное количество, используя формулу: <code>min(текущее_мин,
+                                        dp[i-j*j] + 1)</code></li>
+                                </ul>
+                            </li>
+                            <li>Возвращаем значение dp[n], которое содержит ответ для числа n</li>
+                        </ol>
+
+                        <ul>
+                            <li><strong>Временная сложность:</strong> O(n * n^2)
+                                <ul>
+                                    <li>Внешний цикл выполняется n раз</li>
+                                    <li>Внутренний цикл выполняется n^2 раз в худшем случае</li>
+                                </ul>
+                            </li>
+                            <li><strong>Пространственная сложность:</strong> O(n)
+                                <ul>
+                                    <li>Используется дополнительный массив dp длиной n+1</li>
+                                </ul>
+                            </li>
+                        </ul>
+                        <pre><code class="go">func numSquares(n int) int {
+	dp := make([]int, n+1)
+	dp[0] = 0
+
+	for i := 1; i <= n; i++ {
+		m := i
+		for j := 1; j*j <= i; j++ {
+			m = min(m, dp[i-j*j]+1)
+		}
+		dp[i] = m
+	}
+
+	return dp[n]
+}</code>
+                                        </pre>
+                    </div>
+                </div>
+            </div>
+            <div class="accordion-item">
+                <h2 class="accordion-header">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#q5">
+                        Рандомизированное множество
+                    </button>
+                </h2>
+                <div id="q5" class="accordion-collapse collapse" data-bs-parent="#accordionBlock">
+                    <div class="accordion-body">
+                        <p>Этот код реализует структуру данных <code>RandomizedSet</code>, которая поддерживает операции
+                            вставки, удаления и получения случайного элемента за O(1) времени.</p>
+                        <h3>Структура данных:</h3>
+                        <ul>
+                            <li><code>numMap</code>: карта для хранения значений и их индексов в списке</li>
+                            <li><code>numList</code>: слайс для хранения значений в порядке вставки</li>
+                        </ul>
+                        <h3>Алгоритм решения</h3>
+                        <ol>
+                            <li><strong>Insert(val int):</strong>
+                                <ul>
+                                    <li>Проверяет, существует ли значение в множестве</li>
+                                    <li>Если нет, добавляет его в конец <code>numList</code> и в <code>numMap</code> с
+                                        соответствующим индексом
+                                    </li>
+                                </ul>
+                            </li>
+                            <li><strong>Remove(val int):</strong>
+                                <ul>
+                                    <li>Находит индекс удаляемого элемента в <code>numMap</code></li>
+                                    <li>Заменяет удаляемый элемент последним элементом в <code>numList</code></li>
+                                    <li>Обновляет индекс перемещенного элемента в <code>numMap</code></li>
+                                    <li>Удаляет последний элемент из <code>numList</code> и запись из
+                                        <code>numMap</code></li>
+                                </ul>
+                            </li>
+                            <li><strong>GetRandom():</strong>
+                                <ul>
+                                    <li>Возвращает случайный элемент из <code>numList</code> с помощью
+                                        <code>rand.Intn()</code></li>
+                                </ul>
+                            </li>
+                        </ol>
+
+                        <ul>
+                            <li><strong>Временная сложность:</strong>
+                                <ul>
+                                    <li>Insert: O(1) в среднем</li>
+                                    <li>Remove: O(1) в среднем</li>
+                                    <li>GetRandom: O(1)</li>
+                                </ul>
+                            </li>
+                            <li><strong>Пространственная сложность:</strong> O(n), где n - количество элементов в
+                                множестве
+                            </li>
+                        </ul>
+                        <pre><code class="go">type RandomizedSet struct {
+    numMap map[int]int
+    numList []int
+}
+
+func Constructor() RandomizedSet {
+    return RandomizedSet{
+        numMap: make(map[int]int),
+        numList: []int{},
+    }
+}
+
+func (this *RandomizedSet) Insert(val int) bool {
+    if _, exists := this.numMap[val]; exists {
+        return false
+    }
+    this.numMap[val] = len(this.numList)
+    this.numList = append(this.numList, val)
+    return true
+}
+
+func (this *RandomizedSet) Remove(val int) bool {
+    if idx, exists := this.numMap[val]; exists {
+        lastElement := this.numList[len(this.numList)-1]
+        this.numList[idx] = lastElement
+        this.numMap[lastElement] = idx
+        this.numList = this.numList[:len(this.numList)-1]
+        delete(this.numMap, val)
+        return true
+    }
+    return false
+}
+
+func (this *RandomizedSet) GetRandom() int {
+    return this.numList[rand.Intn(len(this.numList))]
+}</code>
+                                        </pre>
+                    </div>
+                </div>
+            </div>
+            <div class="accordion-item">
+                <h2 class="accordion-header">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#q6">
+                        LRU Cache (Least Recently Used Cache)
+                    </button>
+                </h2>
+                <div id="q6" class="accordion-collapse collapse" data-bs-parent="#accordionBlock">
+                    <div class="accordion-body">
+                        <p>Этот код реализует структуру данных LRU Cache (кэш с вытеснением давно неиспользуемых
+                            элементов). LRU Cache поддерживает операции вставки и получения элементов с ограничением по
+                            емкости.</p>
+                        <h3>Структура данных</h3>
+                        <ul>
+                            <li><code>Node</code>: структура для хранения пар ключ-значение и связей в двусвязном списке
+                            </li>
+                            <li><code>LRUCache</code>:
+                                <ul>
+                                    <li><code>capacity</code>: максимальная емкость кэша</li>
+                                    <li><code>cache</code>: карта для быстрого доступа к узлам по ключу</li>
+                                    <li><code>head</code> и <code>tail</code>: фиктивные узлы для упрощения операций с
+                                        двусвязным списком
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                        <h3>Алгоритм решения</h3>
+                        <ol>
+                            <li><strong>Get(key int):</strong>
+                                <ul>
+                                    <li>Если ключ существует, перемещает соответствующий узел в начало списка и
+                                        возвращает значение
+                                    </li>
+                                    <li>Если ключ не существует, возвращает -1</li>
+                                </ul>
+                            </li>
+                            <li><strong>Put(key int, value int):</strong>
+                                <ul>
+                                    <li>Если ключ существует, обновляет значение и перемещает узел в начало списка</li>
+                                    <li>Если ключ не существует:
+                                        <ul>
+                                            <li>Создает новый узел и добавляет его в начало списка</li>
+                                            <li>Если достигнута максимальная емкость, удаляет последний (наименее
+                                                недавно использованный) элемент
+                                            </li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </li>
+                        </ol>
+
+                        <ul>
+                            <li><code>addNode</code>: добавляет узел в начало списка</li>
+                            <li><code>removeNode</code>: удаляет узел из списка</li>
+                            <li><code>moveToHead</code>: перемещает узел в начало списка</li>
+                            <li><code>popTail</code>: удаляет и возвращает последний узел в списке</li>
+                        </ul>
+
+                        <ul>
+                            <li><strong>Временная сложность:</strong>
+                                <ul>
+                                    <li>Get: O(1)</li>
+                                    <li>Put: O(1)</li>
+                                </ul>
+                            </li>
+                            <li><strong>Пространственная сложность:</strong> O(capacity), где capacity - максимальная
+                                емкость кэша
+                            </li>
+                        </ul>
+
+                        <pre><code class="go">type Node struct {
+	key, value int
+	prev, next *Node
+}
+
+type LRUCache struct {
+	capacity int
+	cache    map[int]*Node
+	head     *Node
+	tail     *Node
+}
+
+func Constructor(capacity int) LRUCache {
+	lru := LRUCache{
+		capacity: capacity,
+		cache:    make(map[int]*Node),
+		head:     &Node{},
+		tail:     &Node{},
+	}
+	lru.head.next = lru.tail
+	lru.tail.prev = lru.head
+	return lru
+}
+
+func (this *LRUCache) Get(key int) int {
+	if node, exists := this.cache[key]; exists {
+		this.moveToHead(node)
+		return node.value
+	}
+	return -1
+}
+
+func (this *LRUCache) Put(key int, value int) {
+	if node, exists := this.cache[key]; exists {
+		node.value = value
+		this.moveToHead(node)
+	} else {
+		newNode := &Node{key: key, value: value}
+		this.cache[key] = newNode
+		this.addNode(newNode)
+		if len(this.cache) > this.capacity {
+			tail := this.popTail()
+			delete(this.cache, tail.key)
+		}
+	}
+}
+
+func (this *LRUCache) addNode(node *Node) {
+	node.prev = this.head
+	node.next = this.head.next
+	this.head.next.prev = node
+	this.head.next = node
+}
+
+func (this *LRUCache) removeNode(node *Node) {
+	node.prev.next = node.next
+	node.next.prev = node.prev
+}
+
+func (this *LRUCache) moveToHead(node *Node) {
+	this.removeNode(node)
+	this.addNode(node)
+}
+
+func (this *LRUCache) popTail() *Node {
+	node := this.tail.prev
+	this.removeNode(node)
+	return node
+}</code>
+                                        </pre>
+                    </div>
+                </div>
+            </div>
+            <div class="accordion-item">
+                <h2 class="accordion-header">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#q7">
+                        Задача о сборе дождевой воды (Trapping Rain Water)
+                    </button>
+                </h2>
+                <div id="q7" class="accordion-collapse collapse" data-bs-parent="#accordionBlock">
+                    <div class="accordion-body">
+                        <p>Этот код решает задачу о сборе дождевой воды. Дан массив целых чисел <code>height</code>,
+                            представляющий высоту стен. Функция <code>trap</code> вычисляет, сколько воды может быть
+                            собрано между стенами после дождя.</p>
+                        <h3>Алгоритм решения</h3>
+                        <ol>
+                            <li>Используется метод двух указателей: <code>left</code> и <code>right</code></li>
+                            <li>Поддерживаются переменные <code>leftMax</code> и <code>rightMax</code> для отслеживания
+                                максимальной высоты с левой и правой стороны соответственно
+                            </li>
+                            <li>На каждом шаге:
+                                <ul>
+                                    <li>Сравниваются высоты на позициях <code>left</code> и <code>right</code></li>
+                                    <li>Обрабатывается меньшая высота:
+                                        <ul>
+                                            <li>Если текущая высота больше или равна максимальной с этой стороны,
+                                                обновляется максимум
+                                            </li>
+                                            <li>Иначе, добавляется количество воды, которое может быть собрано над
+                                                текущей позицией
+                                            </li>
+                                        </ul>
+                                    </li>
+                                    <li>Соответствующий указатель сдвигается к центру</li>
+                                </ul>
+                            </li>
+                            <li>Процесс продолжается, пока указатели не встретятся</li>
+                        </ol>
+                        <ul>
+                            <li><strong>Временная сложность:</strong> O(n), где n - количество элементов в массиве
+                                <code>height</code></li>
+                            <li><strong>Пространственная сложность:</strong> O(1), используется постоянное количество
+                                дополнительной памяти
+                            </li>
+                        </ul>
+
+
+                        <pre><code class="go">func trap(height []int) int {
+	if len(height) < 3 {
+		return 0
+	}
+
+	left, right := 0, len(height)-1
+	leftMax, rightMax := 0, 0
+	water := 0
+
+	for left < right {
+		if height[left] < height[right] {
+			if height[left] >= leftMax {
+				leftMax = height[left]
+			} else {
+				water += leftMax - height[left]
+			}
+			left++
+		} else {
+			if height[right] >= rightMax {
+				rightMax = height[right]
+			} else {
+				water += rightMax - height[right]
+			}
+			right--
+		}
+	}
+
+	return water
+}</code>
+                                        </pre>
+                    </div>
+                </div>
+            </div>
+            <div class="accordion-item">
+                <h2 class="accordion-header">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#q8">
+                        Бинарный поиск (Binary Search)
+                    </button>
+                </h2>
+                <div id="q8" class="accordion-collapse collapse" data-bs-parent="#accordionBlock">
+                    <div class="accordion-body">
+                        <p>Этот код реализует два варианта бинарного поиска:</p>
+                        <ol>
+                            <li>Стандартный бинарный поиск в отсортированном массиве</li>
+                            <li>Модифицированный бинарный поиск для частично отсортированного (повернутого) массива</li>
+                        </ol>
+                        <h3>Алгоритм решения</h3>
+                        <h4>1. Стандартный бинарный поиск (<code>binarySearch</code>):</h4>
+                        <ul>
+                            <li>Инициализация указателей <code>left</code> и <code>right</code> на начало и конец
+                                массива
+                            </li>
+                            <li>Пока <code>left <= right</code>:
+                                <ul>
+                                    <li>Вычисление среднего индекса <code>mid</code></li>
+                                    <li>Если элемент найден, возврат его индекса</li>
+                                    <li>Если целевое значение больше среднего, сдвиг <code>left</code></li>
+                                    <li>Иначе, сдвиг <code>right</code></li>
+                                </ul>
+                            </li>
+                            <li>Возврат -1, если элемент не найден</li>
+                        </ul>
+
+                        <h4>2. Модифицированный бинарный поиск (<code>binarySearchNotSorted</code>):</h4>
+                        <ul>
+                            <li>Аналогичная инициализация указателей</li>
+                            <li>Пока <code>left <= right</code>:
+                                <ul>
+                                    <li>Вычисление среднего индекса <code>mid</code></li>
+                                    <li>Если элемент найден, возврат его индекса</li>
+                                    <li>Определение, какая половина массива отсортирована</li>
+                                    <li>Проверка, находится ли целевое значение в отсортированной половине</li>
+                                    <li>Сдвиг указателей соответственно</li>
+                                </ul>
+                            </li>
+                            <li>Возврат -1, если элемент не найден</li>
+                        </ul>
+
+                        <ul>
+                            <li><strong>Временная сложность:</strong> O(log n) для обоих алгоритмов</li>
+                            <li><strong>Пространственная сложность:</strong> O(1) для обоих алгоритмов</li>
+                        </ul>
+
+                        <pre><code class="go">func binarySearch(arr []int, target int) int {
+	left, right := 0, len(arr)-1
+	for left <= right {
+		mid := left + (right-left)/2
+		if arr[mid] == target {
+			return mid
+		}
+		if arr[mid] < target {
+			left = mid + 1
+		} else {
+			right = mid - 1
+		}
+	}
+	return -1 // Target not found in the array
+}
+
+func binarySearchNotSorted(arr []int, target int) int {
+	left, right := 0, len(arr)-1
+	for left <= right {
+		mid := left + (right-left)/2
+		if arr[mid] == target {
+			return mid
+		}
+		if arr[left] <= arr[mid] && (arr[left] <= target && target <= arr[mid]) ||
+			(arr[left] > arr[mid] && (arr[left] <= target || target <= arr[mid])) {
+			right = mid - 1
+		} else {
+			left = mid + 1
+		}
+	}
+	return -1 // Target not found in the array
+}</code>
+                                        </pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+</div>
+</body>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
+        crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/go.min.js"></script>
+
+<script>hljs.highlightAll();</script>
+</html></title>
+</head>
+<body>
+</body>
+</html>

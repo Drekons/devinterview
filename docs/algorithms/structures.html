@@ -2,12 +2,8 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title><!DOCTYPE html>
-        <html lang="ru">
-        <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>Архитектура</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Архитектура - Связанные списки | Деревья</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/default.min.css">
@@ -438,6 +434,605 @@ func isMirror(left, right *TreeNode) bool {
                     </div>
                 </div>
             </div>
+            <div class="accordion-item">
+                <h2 class="accordion-header">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#q6">
+                        Сложение двух чисел, представленных в виде связанных списков
+                    </button>
+                </h2>
+                <div id="q6" class="accordion-collapse collapse" data-bs-parent="#accordionBlock">
+                    <div class="accordion-body">
+                        <p>Функция <code>addTwoNumbers</code> складывает два числа, представленных в виде связанных
+                            списков, где каждый узел содержит одну цифру, а цифры расположены в обратном порядке.</p>
+                        <h3>Алгоритм решения</h3>
+                        <ol>
+                            <li>Инициализация:
+                                <ul>
+                                    <li>Создание фиктивного узла для результирующего списка</li>
+                                    <li>Инициализация переменной для переноса</li>
+                                </ul>
+                            </li>
+                            <li>Итерация по спискам:
+                                <ul>
+                                    <li>Суммирование соответствующих цифр из обоих списков и переноса</li>
+                                    <li>Вычисление новой цифры результата и нового значения переноса</li>
+                                    <li>Создание нового узла в результирующем списке</li>
+                                    <li>Переход к следующим узлам входных списков</li>
+                                </ul>
+                            </li>
+                            <li>Продолжение итерации, пока есть цифры в любом из списков или есть перенос</li>
+                            <li>Возврат результирующего списка (без фиктивного начального узла)</li>
+                        </ol>
+                        <ul>
+                            <li><strong>Временная сложность:</strong> O(max(n, m))
+                                <ul>
+                                    <li>n и m - длины входных списков</li>
+                                    <li>Один проход по более длинному из двух списков</li>
+                                </ul>
+                            </li>
+                            <li><strong>Пространственная сложность:</strong> O(max(n, m))
+                                <ul>
+                                    <li>Создание нового списка для хранения результата</li>
+                                    <li>Длина результата может быть максимум на один узел больше, чем длина более
+                                        длинного входного списка
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+
+                        <pre><code class="go">func addTwoNumbers(l1 *ListNode, l2 *ListNode) *ListNode {
+	dummy := &ListNode{0, nil}
+	current := dummy
+	carry := 0
+
+	for l1 != nil || l2 != nil || carry != 0 {
+		sum := carry
+		if l1 != nil {
+			sum += l1.Val
+			l1 = l1.Next
+		}
+		if l2 != nil {
+			sum += l2.Val
+			l2 = l2.Next
+		}
+		carry = sum / 10
+		current.Next = &ListNode{sum % 10, nil}
+		current = current.Next
+	}
+
+	return dummy.Next
+}
+
+type ListNode struct {
+	Val  int
+	Next *ListNode
+}</code>
+                                        </pre>
+                    </div>
+                </div>
+            </div>
+            <div class="accordion-item">
+                <h2 class="accordion-header">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#q7">
+                        Объединение K отсортированных связанных списков
+                    </button>
+                </h2>
+                <div id="q7" class="accordion-collapse collapse" data-bs-parent="#accordionBlock">
+                    <div class="accordion-body">
+                        <p>Функция <code>mergeKLists</code> объединяет K отсортированных связанных списков в один
+                            отсортированный список. Для эффективного решения используется структура данных "куча"
+                            (heap).</p>
+                        <h3>Алгоритм решения</h3>
+                        <ol>
+                            <li>Определение структуры данных:
+                                <ul>
+                                    <li><code>ListNode</code> для представления узлов связанного списка</li>
+                                    <li><code>MinHeap</code> как срез указателей на <code>ListNode</code></li>
+                                </ul>
+                            </li>
+                            <li>Реализация интерфейса heap для <code>MinHeap</code>:
+                                <ul>
+                                    <li>Методы <code>Len</code>, <code>Less</code>, <code>Swap</code>, <code>Push</code>,
+                                        <code>Pop</code></li>
+                                </ul>
+                            </li>
+                            <li>Алгоритм объединения:
+                                <ul>
+                                    <li>Инициализация кучи и добавление первых узлов каждого списка</li>
+                                    <li>Итеративное извлечение наименьшего элемента из кучи</li>
+                                    <li>Добавление извлеченного элемента в результирующий список</li>
+                                    <li>Добавление следующего узла из того же списка в кучу, если он существует</li>
+                                </ul>
+                            </li>
+                        </ol>
+                        <ul>
+                            <li><strong>Временная сложность:</strong> O(N log K)
+                                <ul>
+                                    <li>N - общее количество узлов во всех списках</li>
+                                    <li>K - количество списков</li>
+                                    <li>log K - сложность операций с кучей размера K</li>
+                                </ul>
+                            </li>
+                            <li><strong>Пространственная сложность:</strong> O(K)
+                                <ul>
+                                    <li>K - размер кучи, которая содержит по одному узлу из каждого списка</li>
+                                </ul>
+                            </li>
+                        </ul>
+
+                        <pre><code class="go">type ListNode struct {
+	Val  int
+	Next *ListNode
+}
+
+type MinHeap []*ListNode
+
+func (h MinHeap) Len() int           { return len(h) }
+func (h MinHeap) Less(i, j int) bool { return h[i].Val < h[j].Val }
+func (h MinHeap) Swap(i, j int)      { h[i], h[j] = h[j], h[i] }
+
+func (h *MinHeap) Push(x interface{}) {
+	*h = append(*h, x.(*ListNode))
+}
+
+func (h *MinHeap) Pop() interface{} {
+	old := *h
+	n := len(old)
+	x := old[n-1]
+	*h = old[0 : n-1]
+	return x
+}
+
+func mergeKLists(lists []*ListNode) *ListNode {
+	h := &MinHeap{}
+	heap.Init(h)
+
+	// Добавляем первый узел каждого списка в кучу
+	for _, list := range lists {
+		if list != nil {
+			heap.Push(h, list)
+		}
+	}
+
+	dummy := &ListNode{}
+	current := dummy
+
+	// Извлекаем наименьший элемент из кучи и добавляем его в результирующий список
+	for h.Len() > 0 {
+		smallest := heap.Pop(h).(*ListNode)
+		current.Next = smallest
+		current = current.Next
+
+		if smallest.Next != nil {
+			heap.Push(h, smallest.Next)
+		}
+	}
+
+	return dummy.Next
+}</code>
+                                        </pre>
+                    </div>
+                </div>
+            </div>
+            <div class="accordion-item">
+                <h2 class="accordion-header">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#q8">
+                        Объединение двух отсортированных связанных списков
+                    </button>
+                </h2>
+                <div id="q8" class="accordion-collapse collapse" data-bs-parent="#accordionBlock">
+                    <div class="accordion-body">
+                        <p>Функция <code>mergeTwoLists</code> объединяет два отсортированных связанных списка в один
+                            отсортированный список. Она использует рекурсивный подход для решения задачи.</p>
+                        <h3>Алгоритм решения</h3>
+                        <ol>
+                            <li>Проверка базовых случаев:
+                                <ul>
+                                    <li>Если первый список пуст, возвращаем второй список</li>
+                                    <li>Если второй список пуст, возвращаем первый список</li>
+                                </ul>
+                            </li>
+                            <li>Сравнение значений текущих узлов обоих списков:
+                                <ul>
+                                    <li>Если значение узла первого списка меньше или равно значению узла второго списка:
+                                        <ul>
+                                            <li>Рекурсивно вызываем функцию для следующего узла первого списка и всего
+                                                второго списка
+                                            </li>
+                                            <li>Присоединяем результат к текущему узлу первого списка</li>
+                                        </ul>
+                                    </li>
+                                    <li>Иначе:
+                                        <ul>
+                                            <li>Рекурсивно вызываем функцию для всего первого списка и следующего узла
+                                                второго списка
+                                            </li>
+                                            <li>Присоединяем результат к текущему узлу второго списка</li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li>Возвращаем узел с меньшим значением</li>
+                        </ol>
+                        <ul>
+                            <li><strong>Временная сложность:</strong> O(n + m)
+                                <ul>
+                                    <li>n - длина первого списка</li>
+                                    <li>m - длина второго списка</li>
+                                    <li>Каждый узел обрабатывается ровно один раз</li>
+                                </ul>
+                            </li>
+                            <li><strong>Пространственная сложность:</strong> O(n + m)
+                                <ul>
+                                    <li>В худшем случае (при несбалансированном рекурсивном дереве вызовов) может
+                                        достигать O(n + m)
+                                    </li>
+                                    <li>Это связано с глубиной рекурсии, которая может быть равна сумме длин списков
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+
+                        <pre><code class="go">type ListNode struct {
+	Val  int
+	Next *ListNode
+}
+
+func mergeTwoLists(list1 *ListNode, list2 *ListNode) *ListNode {
+	if list1 == nil {
+		return list2
+	}
+	if list2 == nil {
+		return list1
+	}
+
+	if list1.Val <= list2.Val {
+		list1.Next = mergeTwoLists(list1.Next, list2)
+		return list1
+	} else {
+		list2.Next = mergeTwoLists(list1, list2.Next)
+		return list2
+	}
+}</code>
+                                        </pre>
+                    </div>
+                </div>
+            </div>
+            <div class="accordion-item">
+                <h2 class="accordion-header">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#q9">
+                        Удаление N-го узла с конца связанного списка
+                    </button>
+                </h2>
+                <div id="q9" class="accordion-collapse collapse" data-bs-parent="#accordionBlock">
+                    <div class="accordion-body">
+                        <p>Функция <code>removeNthFromEnd</code> удаляет N-й узел с конца односвязного списка.</p>
+                        <h3>Алгоритм решения</h3>
+                        <ol>
+                            <li>Создание фиктивного узла (dummy node):
+                                <ul>
+                                    <li>Упрощает обработку случая удаления первого элемента</li>
+                                </ul>
+                            </li>
+                            <li>Использование двух указателей:
+                                <ul>
+                                    <li><code>first</code>: продвигается на N+1 узлов вперед</li>
+                                    <li><code>second</code>: остается в начале</li>
+                                </ul>
+                            </li>
+                            <li>Продвижение указателей:
+                                <ul>
+                                    <li>Оба указателя двигаются вперед, пока <code>first</code> не достигнет конца
+                                        списка
+                                    </li>
+                                </ul>
+                            </li>
+                            <li>Удаление узла:
+                                <ul>
+                                    <li><code>second</code> указывает на узел перед удаляемым</li>
+                                    <li>Перенаправление указателя <code>Next</code> для удаления нужного узла</li>
+                                </ul>
+                            </li>
+                        </ol>
+                        <ul>
+                            <li><strong>Временная сложность:</strong> O(L)
+                                <ul>
+                                    <li>L - длина списка</li>
+                                    <li>Один проход по списку</li>
+                                </ul>
+                            </li>
+                            <li><strong>Пространственная сложность:</strong> O(1)
+                                <ul>
+                                    <li>Использование только нескольких дополнительных указателей</li>
+                                    <li>Не зависит от размера входного списка</li>
+                                </ul>
+                            </li>
+                        </ul>
+
+                        <pre><code class="go">type ListNode struct {
+	Val  int
+	Next *ListNode
+}
+
+func removeNthFromEnd(head *ListNode, n int) *ListNode {
+	// Создаем фиктивный узел, чтобы упростить обработку случая удаления первого элемента
+	dummy := &ListNode{Next: head}
+
+	// Инициализируем два указателя
+	first := dummy
+	second := dummy
+
+	// Продвигаем первый указатель на n узлов вперед
+	for i := 0; i <= n; i++ {
+		first = first.Next
+	}
+
+	// Двигаем оба указателя, пока первый не достигнет конца
+	for first != nil {
+		first = first.Next
+		second = second.Next
+	}
+
+	// Удаляем n-ый узел с конца
+	second.Next = second.Next.Next
+
+	return dummy.Next
+}</code>
+                                        </pre>
+                    </div>
+                </div>
+            </div>
+            <div class="accordion-item">
+                <h2 class="accordion-header">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#q10">
+                        Разворот связанного списка
+                    </button>
+                </h2>
+                <div id="q10" class="accordion-collapse collapse" data-bs-parent="#accordionBlock">
+                    <div class="accordion-body">
+                        <p>Функция <code>reverseList</code> разворачивает односвязный список, изменяя направление всех
+                            указателей.</p>
+                        <h3>Алгоритм решения</h3>
+                        <ol>
+                            <li>Проверка на пустой список:
+                                <ul>
+                                    <li>Если список пуст, возвращаем nil</li>
+                                </ul>
+                            </li>
+                            <li>Инициализация указателей:
+                                <ul>
+                                    <li><code>prev</code>: изначально null</li>
+                                    <li><code>current</code>: указывает на голову списка</li>
+                                </ul>
+                            </li>
+                            <li>Итерация по списку:
+                                <ul>
+                                    <li>Сохранение следующего узла во временной переменной</li>
+                                    <li>Изменение указателя текущего узла на предыдущий</li>
+                                    <li>Перемещение указателей <code>prev</code> и <code>current</code> вперед</li>
+                                </ul>
+                            </li>
+                            <li>Возврат нового начала списка (бывший последний элемент)</li>
+                        </ol>
+                        <ul>
+                            <li><strong>Временная сложность:</strong> O(n)
+                                <ul>
+                                    <li>n - количество узлов в списке</li>
+                                    <li>Один проход по всем элементам списка</li>
+                                </ul>
+                            </li>
+                            <li><strong>Пространственная сложность:</strong> O(1)
+                                <ul>
+                                    <li>Использование фиксированного количества дополнительных переменных</li>
+                                    <li>Не зависит от размера входного списка</li>
+                                </ul>
+                            </li>
+                        </ul>
+
+                        <pre><code class="go">type ListNode struct {
+    Val  int
+    Next *ListNode
+}
+
+func reverseList(head *ListNode) *ListNode {
+    // Проверка на пустой список
+    if head == nil {
+        return nil
+    }
+
+    var prev *ListNode
+    current := head
+
+    for current != nil {
+        nextTemp := current.Next
+        current.Next = prev
+        prev = current
+        current = nextTemp
+    }
+
+    return prev
+}</code>
+                                        </pre>
+                    </div>
+                </div>
+            </div>
+            <div class="accordion-item">
+                <h2 class="accordion-header">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#q11">
+                        Сериализация и десериализация бинарного дерева поиска (BST)
+                    </button>
+                </h2>
+                <div id="q11" class="accordion-collapse collapse" data-bs-parent="#accordionBlock">
+                    <div class="accordion-body">
+                        <p>Код реализует две основные функции:</p>
+                        <ul>
+                            <li><code>serialize</code>: преобразует бинарное дерево поиска в строку</li>
+                            <li><code>deserialize</code>: восстанавливает бинарное дерево поиска из строки</li>
+                        </ul>
+
+                        <h3>Алгоритм решения</h3>
+                        <h4>Сериализация:</h4>
+                        <ol>
+                            <li>Использует обход дерева в глубину (DFS) в порядке предварительного обхода (preorder)
+                            </li>
+                            <li>Преобразует значения узлов в строки</li>
+                            <li>Соединяет значения запятыми</li>
+                        </ol>
+                        <ul>
+                            <li><strong>Временная сложность:</strong> O(n), где n - количество узлов в дереве</li>
+                            <li><strong>Пространственная сложность:</strong> O(n) для хранения результирующей строки
+                            </li>
+                        </ul>
+
+                        <h4>Десериализация:</h4>
+                        <ol>
+                            <li>Разбивает входную строку на массив значений</li>
+                            <li>Использует рекурсивную функцию для восстановления дерева</li>
+                            <li>Применяет свойство BST для определения границ значений при построении</li>
+                        </ol>
+                        <ul>
+                            <li><strong>Временная сложность:</strong> O(n), где n - количество узлов в дереве</li>
+                            <li><strong>Пространственная сложность:</strong> O(n) для хранения массива значений и
+                                рекурсивного стека
+                            </li>
+                        </ul>
+                        <pre><code class="go">type TreeNode struct {
+    Val   int
+    Left  *TreeNode
+    Right *TreeNode
+}
+
+type Codec struct{}
+
+func Constructor() Codec {
+    return Codec{}
+}
+
+// Serializes a tree to a single string.
+func (this *Codec) serialize(root *TreeNode) string {
+    if root == nil {
+        return ""
+    }
+    var result []string
+    var dfs func(*TreeNode)
+    dfs = func(node *TreeNode) {
+        if node == nil {
+            return
+        }
+        result = append(result, strconv.Itoa(node.Val))
+        dfs(node.Left)
+        dfs(node.Right)
+    }
+    dfs(root)
+    return strings.Join(result, ",")
+}
+
+// Deserializes your encoded data to tree.
+func (this *Codec) deserialize(data string) *TreeNode {
+    if data == "" {
+        return nil
+    }
+    values := strings.Split(data, ",")
+    var index int
+    var build func(min, max int) *TreeNode
+    build = func(min, max int) *TreeNode {
+        if index >= len(values) {
+            return nil
+        }
+        val, _ := strconv.Atoi(values[index])
+        if val < min || val > max {
+            return nil
+        }
+        index++
+        node := &TreeNode{Val: val}
+        node.Left = build(min, val-1)
+        node.Right = build(val+1, max)
+        return node
+    }
+    return build(math.MinInt, math.MaxInt)
+}</code>
+                                        </pre>
+                    </div>
+                </div>
+            </div>
+            <div class="accordion-item">
+                <h2 class="accordion-header">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#q12">
+                        Проверка корректности бинарного дерева поиска (BST)
+                    </button>
+                </h2>
+                <div id="q12" class="accordion-collapse collapse" data-bs-parent="#accordionBlock">
+                    <div class="accordion-body">
+                        <p>Функция <code>isValidBST</code> проверяет, является ли заданное бинарное дерево корректным
+                            бинарным деревом поиска (BST).</p>
+
+                        <h3>Алгоритм решения</h3>
+                        <ol>
+                            <li>Использует рекурсивный подход для обхода дерева</li>
+                            <li>Для каждого узла проверяет, находится ли его значение в допустимом диапазоне</li>
+                            <li>Рекурсивно проверяет левое и правое поддеревья, обновляя границы допустимого диапазона
+                            </li>
+                        </ol>
+
+                        <h3>Детали реализации:</h3>
+                        <ul>
+                            <li>Функция <code>isValidBST</code> инициирует проверку с максимально возможным диапазоном
+                                значений
+                            </li>
+                            <li>Функция <code>validateBST</code> выполняет рекурсивную проверку:
+                                <ul>
+                                    <li>Проверяет, не является ли узел пустым (базовый случай)</li>
+                                    <li>Проверяет, находится ли значение узла в допустимом диапазоне</li>
+                                    <li>Рекурсивно проверяет левое и правое поддеревья с обновленными границами</li>
+                                </ul>
+                            </li>
+                        </ul>
+
+                        <ul>
+                            <li><strong>Временная сложность:</strong> O(n), где n - количество узлов в дереве
+                                <ul>
+                                    <li>Каждый узел посещается ровно один раз</li>
+                                </ul>
+                            </li>
+                            <li><strong>Пространственная сложность:</strong> O(h), где h - высота дерева
+                                <ul>
+                                    <li>В худшем случае (несбалансированное дерево) может достигать O(n)</li>
+                                    <li>В среднем случае для сбалансированного дерева будет O(log n)</li>
+                                </ul>
+                            </li>
+                        </ul>
+                        <pre><code class="go">type TreeNode struct {
+    Val   int
+    Left  *TreeNode
+    Right *TreeNode
+}
+
+func isValidBST(root *TreeNode) bool {
+    return validateBST(root, math.MinInt64, math.MaxInt64)
+}
+
+func validateBST(node *TreeNode, min, max int) bool {
+    if node == nil {
+        return true
+    }
+
+    if node.Val <= min || node.Val >= max {
+        return false
+    }
+
+    return validateBST(node.Left, min, node.Val) && validateBST(node.Right, node.Val, max)
+}</code>
+                                        </pre>
+                    </div>
+                </div>
+            </div>
         </div>
     </main>
 </div>
@@ -451,6 +1046,5 @@ func isMirror(left, right *TreeNode) bool {
 </html></title>
 </head>
 <body>
-
 </body>
 </html>

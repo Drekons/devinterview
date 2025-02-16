@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Архитектура - Матрицы</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/default.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+</head>
+<body>
+<div class="container">
+    <header>
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="#">DevInterview</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                        aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav">
+                        <li class="nav-item">
+                            <a class="nav-link" href="../php.html">PHP - вопросы</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="../php_tasks.html">PHP - задачи</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="../go.html">Go - вопросы</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="../go_tasks.html">Go - задачи</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="../db.html">Базы данных</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="../architecture.html">Архитектура</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link active" href="../algorithms.html">Алгоритмы</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+    <main>
+        <h1>Алгоритмы - Матрицы</h1>
+        <div class="accordion" id="accordionBlock">
+            <div class="accordion-item">
+                <h2 class="accordion-header">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#q1">
+                        Поиск максимального прямоугольника в бинарной матрице
+                    </button>
+                </h2>
+                <div id="q1" class="accordion-collapse collapse" data-bs-parent="#accordionBlock">
+                    <div class="accordion-body">
+                        <p>Функция <code>maximalRectangle</code> находит площадь наибольшего прямоугольника, состоящего
+                            из единиц, в бинарной матрице.</p>
+                        <h3>Алгоритм решения</h3>
+                        <ol>
+                            <li>Преобразование задачи в серию задач поиска наибольшей площади гистограммы</li>
+                            <li>Построение гистограммы для каждой строки матрицы</li>
+                            <li>Использование алгоритма поиска наибольшей площади гистограммы для каждой построенной
+                                гистограммы
+                            </li>
+                            <li>Обновление максимальной найденной площади</li>
+                        </ol>
+                        <ul>
+                            <li>Функция <code>maximalRectangle</code>:
+                                <ul>
+                                    <li>Проверяет входные данные на корректность</li>
+                                    <li>Инициализирует массив высот гистограммы</li>
+                                    <li>Итерируется по строкам матрицы, обновляя гистограмму</li>
+                                    <li>Вызывает функцию <code>largestRectangleArea</code> для каждой гистограммы</li>
+                                </ul>
+                            </li>
+                            <li>Функция <code>largestRectangleArea</code>:
+                                <ul>
+                                    <li>Использует стек для эффективного поиска наибольшей площади в гистограмме</li>
+                                    <li>Обрабатывает каждый столбец гистограммы, вычисляя возможные прямоугольники</li>
+                                </ul>
+                            </li>
+                        </ul>
+                        <ul>
+                            <li><strong>Временная сложность:</strong> O(rows * cols), где rows и cols - размеры матрицы
+                                <ul>
+                                    <li>Каждый элемент матрицы обрабатывается один раз</li>
+                                    <li>Для каждой строки выполняется линейный проход по гистограмме</li>
+                                </ul>
+                            </li>
+                            <li><strong>Пространственная сложность:</strong> O(cols)
+                                <ul>
+                                    <li>Используется дополнительная память для хранения гистограммы</li>
+                                    <li>Стек в худшем случае может содержать все столбцы</li>
+                                </ul>
+                            </li>
+                        </ul>
+
+                        <pre><code class="go">func maximalRectangle(matrix [][]byte) int {
+	if len(matrix) == 0 || len(matrix[0]) == 0 {
+		return 0
+	}
+
+	rows, cols := len(matrix), len(matrix[0])
+	heights := make([]int, cols)
+	maxArea := 0
+
+	for i := 0; i < rows; i++ {
+		for j := 0; j < cols; j++ {
+			if matrix[i][j] == '1' {
+				heights[j]++
+			} else {
+				heights[j] = 0
+			}
+		}
+		area := largestRectangleArea(heights)
+		if area > maxArea {
+			maxArea = area
+		}
+	}
+
+	return maxArea
+}
+
+func largestRectangleArea(heights []int) int {
+	stack := []int{}
+	maxArea := 0
+	heights = append(heights, 0) // добавляем 0 в конец для обработки оставшихся элементов в стеке
+
+	for i := 0; i <= len(heights)-1; i++ {
+		for len(stack) > 0 && heights[stack[len(stack)-1]] > heights[i] {
+			height := heights[stack[len(stack)-1]]
+			stack = stack[:len(stack)-1]
+
+			width := i
+			if len(stack) > 0 {
+				width = i - stack[len(stack)-1] - 1
+			}
+
+			if height*width > maxArea {
+				maxArea = height * width
+			}
+		}
+		stack = append(stack, i)
+	}
+
+	return maxArea
+}</code>
+                                        </pre>
+                    </div>
+                </div>
+            </div>
+            <div class="accordion-item">
+                <h2 class="accordion-header">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#q2">
+                        Подсчет количества островов в двумерной сетке
+                    </button>
+                </h2>
+                <div id="q2" class="accordion-collapse collapse" data-bs-parent="#accordionBlock">
+                    <div class="accordion-body">
+                        <p>Функция <code>numIslands</code> подсчитывает количество островов в двумерной сетке, где '1'
+                            представляет сушу, а '0' - воду.</p>
+                        <h3>Алгоритм решения</h3>
+                        <ol>
+                            <li>Итерация по всем ячейкам сетки</li>
+                            <li>При обнаружении суши ('1') выполняется поиск в глубину (DFS)</li>
+                            <li>DFS помечает все связанные участки суши как посещенные</li>
+                            <li>Увеличение счетчика островов после каждого завершенного DFS</li>
+                        </ol>
+                        <ul>
+                            <li>Функция <code>numIslands</code>:
+                                <ul>
+                                    <li>Проверяет входные данные на корректность</li>
+                                    <li>Итерируется по всем ячейкам сетки</li>
+                                    <li>Вызывает DFS для каждого найденного участка суши</li>
+                                    <li>Подсчитывает количество обнаруженных островов</li>
+                                </ul>
+                            </li>
+                            <li>Функция <code>dfs</code>:
+                                <ul>
+                                    <li>Рекурсивно обходит соседние ячейки суши</li>
+                                    <li>Помечает посещенные ячейки, изменяя их значение на '0'</li>
+                                    <li>Проверяет границы сетки и тип ячейки (суша/вода)</li>
+                                </ul>
+                            </li>
+                        </ul>
+                        <ul>
+                            <li><strong>Временная сложность:</strong> O(m * n), где m - количество строк, n - количество
+                                столбцов в сетке
+                                <ul>
+                                    <li>Каждая ячейка посещается не более одного раза</li>
+                                </ul>
+                            </li>
+                            <li><strong>Пространственная сложность:</strong> O(m * n) в худшем случае
+                                <ul>
+                                    <li>Обусловлена рекурсивным стеком DFS</li>
+                                    <li>Достигает максимума, если вся сетка заполнена сушей</li>
+                                </ul>
+                            </li>
+                        </ul>
+
+                        <pre><code class="go">func numIslands(grid [][]byte) int {
+	if len(grid) == 0 || len(grid[0]) == 0 {
+		return 0
+	}
+
+	count := 0
+	for i := range grid {
+		for j := range grid[i] {
+			if grid[i][j] == '1' {
+				dfs(grid, i, j)
+				count++
+			}
+		}
+	}
+	return count
+}
+
+func dfs(grid [][]byte, i, j int) {
+	if i < 0 || i >= len(grid) || j < 0 || j >= len(grid[0]) || grid[i][j] != '1' {
+		return
+	}
+
+	// Помечаем текущую клетку как посещенную
+	grid[i][j] = '0'
+
+	// Рекурсивно обходим соседние клетки
+	dfs(grid, i+1, j)
+	dfs(grid, i-1, j)
+	dfs(grid, i, j+1)
+	dfs(grid, i, j-1)
+}</code>
+                                        </pre>
+                    </div>
+                </div>
+            </div>
+            <div class="accordion-item">
+                <h2 class="accordion-header">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#q3">
+                        Поворот изображения (матрицы) на 90 градусов по часовой стрелке
+                    </button>
+                </h2>
+                <div id="q3" class="accordion-collapse collapse" data-bs-parent="#accordionBlock">
+                    <div class="accordion-body">
+                        <p>Функция <code>rotate</code> выполняет поворот квадратной матрицы (изображения) на 90 градусов
+                            по часовой стрелке без использования дополнительной памяти.</p>
+                        <h3>Алгоритм решения</h3>
+                        <ol>
+                            <li>Транспонирование матрицы (замена строк на столбцы)</li>
+                            <li>Отражение каждой строки матрицы</li>
+                        </ol>
+                        <ul>
+                            <li>Транспонирование матрицы:
+                                <ul>
+                                    <li>Обмен элементов matrix[i][j] и matrix[j][i] для i &lt; j</li>
+                                    <li>Изменяет расположение элементов по диагонали</li>
+                                </ul>
+                            </li>
+                            <li>Отражение строк:
+                                <ul>
+                                    <li>Обмен элементов в каждой строке: первый с последним, второй с предпоследним и
+                                        т.д.
+                                    </li>
+                                    <li>Выполняется только для половины элементов каждой строки</li>
+                                </ul>
+                            </li>
+                        </ul>
+                        <ul>
+                            <li><strong>Временная сложность:</strong> O(n^2), где n - размер стороны матрицы
+                                <ul>
+                                    <li>Транспонирование: O(n^2/2) операций</li>
+                                    <li>Отражение: O(n^2/2) операций</li>
+                                </ul>
+                            </li>
+                            <li><strong>Пространственная сложность:</strong> O(1)
+                                <ul>
+                                    <li>Все операции выполняются на месте, без использования дополнительной памяти</li>
+                                </ul>
+                            </li>
+                        </ul>
+                        <pre><code class="go">func rotate(matrix [][]int) {
+	n := len(matrix)
+
+	// Транспонируем матрицу (строки и столбцы меняем местами)
+	for i := 0; i < n; i++ {
+		for j := i; j < n; j++ {
+			matrix[i][j], matrix[j][i] = matrix[j][i], matrix[i][j]
+		}
+	}
+
+	// Отражаем каждую строку
+	for i := 0; i < n; i++ {
+		for j := 0; j < n/2; j++ {
+			matrix[i][j], matrix[i][n-1-j] = matrix[i][n-1-j], matrix[i][j]
+		}
+	}
+}</code>
+                                        </pre>
+                    </div>
+                </div>
+            </div>
+            <div class="accordion-item">
+                <h2 class="accordion-header">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#q4">
+                        Генерация спиральной матрицы
+                    </button>
+                </h2>
+                <div id="q4" class="accordion-collapse collapse" data-bs-parent="#accordionBlock">
+                    <div class="accordion-body">
+                        <p>Функция <code>generateMatrix</code> создает квадратную матрицу размером n x n, заполненную
+                            числами от 1 до n^2 в спиральном порядке по часовой стрелке.</p>
+                        <h3>Алгоритм решения</h3>
+                        <ol>
+                            <li>Инициализация пустой матрицы размером n x n</li>
+                            <li>Определение границ для заполнения (left, right, top, bottom)</li>
+                            <li>Последовательное заполнение матрицы по спирали:
+                                <ul>
+                                    <li>Верхняя строка слева направо</li>
+                                    <li>Правый столбец сверху вниз</li>
+                                    <li>Нижняя строка справа налево</li>
+                                    <li>Левый столбец снизу вверх</li>
+                                </ul>
+                            </li>
+                            <li>Сужение границ после каждого прохода</li>
+                            <li>Повторение процесса до заполнения всей матрицы</li>
+                        </ol>
+                        <ul>
+                            <li>Использование четырех указателей (left, right, top, bottom) для отслеживания границ</li>
+                            <li>Применение переменной num для последовательной нумерации элементов</li>
+                            <li>Использование вложенных циклов для заполнения каждой стороны спирали</li>
+                            <li>Проверки условий для предотвращения повторного заполнения ячеек</li>
+                        </ul>
+                        <ul>
+                            <li><strong>Временная сложность:</strong> O(n^2)
+                                <ul>
+                                    <li>Каждая ячейка матрицы заполняется ровно один раз</li>
+                                </ul>
+                            </li>
+                            <li><strong>Пространственная сложность:</strong> O(n^2)
+                                <ul>
+                                    <li>Для хранения результирующей матрицы</li>
+                                </ul>
+                            </li>
+                        </ul>
+                        <pre><code class="go">func generateMatrix(n int) [][]int {
+    // Создаем матрицу n x n, заполненную нулями
+    matrix := make([][]int, n)
+    for i := range matrix {
+        matrix[i] = make([]int, n)
+    }
+
+    // Определяем границы
+    left, right := 0, n-1
+    top, bottom := 0, n-1
+    num := 1
+
+    for left <= right && top <= bottom {
+        // Заполняем верхнюю строку слева направо
+        for col := left; col <= right; col++ {
+            matrix[top][col] = num
+            num++
+        }
+        top++
+
+        // Заполняем правый столбец сверху вниз
+        for row := top; row <= bottom; row++ {
+            matrix[row][right] = num
+            num++
+        }
+        right--
+
+        if top <= bottom {
+            // Заполняем нижнюю строку справа налево
+            for col := right; col >= left; col-- {
+                matrix[bottom][col] = num
+                num++
+            }
+            bottom--
+        }
+
+        if left <= right {
+            // Заполняем левый столбец снизу вверх
+            for row := bottom; row >= top; row-- {
+                matrix[row][left] = num
+                num++
+            }
+            left++
+        }
+    }
+
+    return matrix
+}</code>
+                                        </pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+</div>
+</body>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
+        crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/go.min.js"></script>
+
+<script>hljs.highlightAll();</script>
+</html></title>
+</head>
+<body>
+</body>
+</html>
