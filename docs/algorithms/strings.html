@@ -804,81 +804,88 @@ func expandAroundCenter(s string, left, right int) int {
                 <h2 class="accordion-header">
                     <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
                             data-bs-target="#q11">
-                        Проверка включения перестановки
+                        Поиск перестановки в строке
                     </button>
                 </h2>
                 <div id="q11" class="accordion-collapse collapse" data-bs-parent="#accordionBlock">
                     <div class="accordion-body">
-                        <p>Функция <code>checkInclusion</code> проверяет, содержит ли строка s2 перестановку строки s1.
-                        </p>
+                        <p>Дано две строки s1 и s2. Необходимо определить, содержит ли строка s2 перестановку строки s1
+                            в качестве подстроки. Задача известна как "Permutation in String".</p>
+
                         <h3>Алгоритм решения</h3>
                         <ol>
-                            <li>Проверка начальных условий: если s1 длиннее s2, возвращаем false</li>
-                            <li>Инициализация массива count для подсчета частоты символов</li>
-                            <li>Обработка первого окна размером len(s1):
+                            <li>Проверяем, что длина s1 не превышает длину s2. Если превышает, возвращаем false.</li>
+                            <li>Создаем два массива count1 и count2 размером 256 для подсчета частоты символов.</li>
+                            <li>Заполняем count1 частотами символов из s1 и count2 частотами символов из первого окна s2
+                                длиной len(s1).
+                            </li>
+                            <li>Проверяем, равны ли count1 и count2. Если да, возвращаем true.</li>
+                            <li>Используем метод скользящего окна для проверки остальной части s2:
                                 <ul>
-                                    <li>Увеличиваем счетчики для символов s1</li>
-                                    <li>Уменьшаем счетчики для соответствующих символов s2</li>
+                                    <li>Уменьшаем счетчик для символа, выходящего из окна.</li>
+                                    <li>Увеличиваем счетчик для нового символа, входящего в окно.</li>
+                                    <li>Сравниваем count1 и count2. Если равны, возвращаем true.</li>
                                 </ul>
                             </li>
-                            <li>Проверка, все ли счетчики равны нулю (перестановка найдена)</li>
-                            <li>Скользящее окно по оставшейся части s2:
-                                <ul>
-                                    <li>Удаляем символ, выходящий из окна</li>
-                                    <li>Добавляем новый символ в окно</li>
-                                    <li>Проверяем, все ли счетчики равны нулю</li>
-                                </ul>
-                            </li>
+                            <li>Если ни одно окно не дало совпадения, возвращаем false.</li>
                         </ol>
+                        <h3>Особенности решения</h3>
                         <ul>
-                            <li><strong>Временная сложность:</strong> O(n)
-                                <ul>
-                                    <li>n - длина строки s2</li>
-                                    <li>Один проход по s2 с константными операциями на каждом шаге</li>
-                                </ul>
+                            <li>Работает с расширенным набором символов UTF-8, включая эмодзи и другие Unicode
+                                символы.
                             </li>
-                            <li><strong>Пространственная сложность:</strong> O(1)
-                                <ul>
-                                    <li>Используется фиксированный массив count размером 26 (для букв английского
-                                        алфавита)
-                                    </li>
-                                </ul>
+                            <li>Эффективно использует метод скользящего окна для оптимизации производительности.</li>
+                            <li>Не требует сортировки или преобразования строк, что улучшает эффективность.</li>
+                            <li>Подходит для работы с большими строками благодаря линейной временной сложности.</li>
+                        </ul>
+                        <ul>
+                            <li><strong>Временная сложность:</strong> O(n), где n - длина строки s2. Мы проходим по s2
+                                один раз.
+                            </li>
+                            <li><strong>Пространственная сложность:</strong> O(1), так как используются массивы
+                                фиксированного размера (256) независимо от входных данных.
                             </li>
                         </ul>
 
                         <pre><code class="go">func checkInclusion(s1 string, s2 string) bool {
-	if len(s1) > len(s2) {
-		return false
-	}
+    if len(s1) > len(s2) {
+        return false
+    }
 
-	count := [26]int{}
-	for i := range s1 {
-		count[s1[i]-'a']++
-		count[s2[i]-'a']--
-	}
+    // Создаем слайсы для подсчета символов
+    count1 := make([]int, 256)
+    count2 := make([]int, 256)
 
-	if allZero(count) {
-		return true
-	}
+    // Заполняем count1 для s1 и первого окна s2
+    for i := 0; i < len(s1); i++ {
+        count1[s1[i]]++
+        count2[s2[i]]++
+    }
 
-	for i := len(s1); i < len(s2); i++ {
-		count[s2[i]-'a']--
-		count[s2[i-len(s1)]-'a']++
-		if allZero(count) {
-			return true
-		}
-	}
+    // Проверяем первое окно
+    if isEqual(count1, count2) {
+        return true
+    }
 
-	return false
+    // Скользящее окно для остальной части s2
+    for i := len(s1); i < len(s2); i++ {
+        count2[s2[i-len(s1)]]--
+        count2[s2[i]]++
+        if isEqual(count1, count2) {
+            return true
+        }
+    }
+
+    return false
 }
 
-func allZero(count [26]int) bool {
-	for _, v := range count {
-		if v != 0 {
-			return false
-		}
-	}
-	return true
+func isEqual(count1, count2 []int) bool {
+    for i := 0; i < 256; i++ {
+        if count1[i] != count2[i] {
+            return false
+        }
+    }
+    return true
 }</code>
                                         </pre>
                     </div>

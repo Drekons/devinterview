@@ -1955,6 +1955,102 @@ func medianOfArray(nums []int) float64 {
             <div class="accordion-item">
                 <h2 class="accordion-header">
                     <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#q24-2">
+                        Максимальный подотрезок с ограниченной разницей
+                    </button>
+                </h2>
+                <div id="q24-2" class="accordion-collapse collapse" data-bs-parent="#accordionBlock">
+                    <div class="accordion-body">
+                        <p>Дан массив целых положительных чисел и число k. Требуется найти максимальный по длине
+                            подмассив, в котором разница между максимальным и минимальным элементом не превышает k.</p>
+
+                        <h3>Алгоритм решения</h3>
+                        <ol>
+                            <li>Инициализируем два указателя: left и right, определяющие текущий подмассив.</li>
+                            <li>Создаем два монотонных стека: minStack для минимальных элементов и maxStack для
+                                максимальных.
+                            </li>
+                            <li>Двигаем правый указатель right по массиву:
+                                <ul>
+                                    <li>Обновляем minStack, удаляя элементы, большие текущего.</li>
+                                    <li>Обновляем maxStack, удаляя элементы, меньшие текущего.</li>
+                                    <li>Добавляем текущий индекс в оба стека.</li>
+                                </ul>
+                            </li>
+                            <li>Если разница между максимальным и минимальным элементом превышает k:
+                                <ul>
+                                    <li>Двигаем левый указатель left вправо.</li>
+                                    <li>Обновляем стеки, удаляя элементы, вышедшие за пределы текущего окна.</li>
+                                </ul>
+                            </li>
+                            <li>Обновляем максимальную длину подмассива.</li>
+                            <li>Повторяем шаги 3-5, пока не достигнем конца массива.</li>
+                        </ol>
+
+                        <ul>
+                            <li>Использование монотонных стеков позволяет эффективно отслеживать минимальные и
+                                максимальные элементы в текущем окне.
+                            </li>
+                            <li>Алгоритм работает за линейное время, что делает его эффективным для больших массивов.
+                            </li>
+                            <li>Решение использует технику "скользящего окна" с динамическим изменением его размера.
+                            </li>
+                            <li>Подход позволяет решить задачу за один проход по массиву.</li>
+                        </ul>
+                        <ul>
+                            <li><strong>Временная сложность:</strong> O(n), где n - длина входного массива. Каждый
+                                элемент добавляется и удаляется из стеков не более одного раза.
+                            </li>
+                            <li><strong>Пространственная сложность:</strong> O(n) в худшем случае, когда все элементы
+                                могут оказаться в стеках.
+                            </li>
+                        </ul>
+
+
+                        <pre><code class="go">func maxSubarrayWithDiffK(arr []int, k int) int {
+	n := len(arr)
+	maxLen := 0
+	left := 0
+	minStack := []int{}
+	maxStack := []int{}
+
+	for right := 0; right < n; right++ {
+		// Обновляем минимальный стек
+		for len(minStack) > 0 && arr[minStack[len(minStack)-1]] > arr[right] {
+			minStack = minStack[:len(minStack)-1]
+		}
+		minStack = append(minStack, right)
+
+		// Обновляем максимальный стек
+		for len(maxStack) > 0 && arr[maxStack[len(maxStack)-1]] < arr[right] {
+			maxStack = maxStack[:len(maxStack)-1]
+		}
+		maxStack = append(maxStack, right)
+
+		// Проверяем разницу между максимальным и минимальным элементом
+		for arr[maxStack[0]]-arr[minStack[0]] > k {
+			left++
+			if left > minStack[0] {
+				minStack = minStack[1:]
+			}
+			if left > maxStack[0] {
+				maxStack = maxStack[1:]
+			}
+		}
+
+		// Обновляем максимальную длину
+		maxLen = max(maxLen, right-left+1)
+	}
+
+	return maxLen
+}</code>
+                                        </pre>
+                    </div>
+                </div>
+            </div>
+            <div class="accordion-item">
+                <h2 class="accordion-header">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
                             data-bs-target="#q25">
                         Сумма трех чисел, ближайшая к целевому значению
                     </button>
@@ -2252,6 +2348,570 @@ func findShiftPoint(nums []int) int {
     }
 
     return 0
+}</code>
+                                        </pre>
+                    </div>
+                </div>
+            </div>
+            <div class="accordion-item">
+                <h2 class="accordion-header">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#q28">
+                        Подсчет общих префиксов в двух массивах
+                    </button>
+                </h2>
+                <div id="q28" class="accordion-collapse collapse" data-bs-parent="#accordionBlock">
+                    <div class="accordion-body">
+                        <p>Даны два массива целых чисел A и B одинаковой длины N. Для каждого K от 1 до N необходимо
+                            подсчитать количество чисел, которые встречаются как в первых K элементах массива A, так и в
+                            первых K элементах массива B. Результат нужно вернуть в виде массива длины N+1, где элемент
+                            с индексом K содержит количество общих чисел для первых K элементов обоих массивов.</p>
+                        <h3>Алгоритм решения</h3>
+                        <ol>
+                            <li>Инициализировать массив результатов и хеш-таблицу для отслеживания встречаемости
+                                чисел.
+                            </li>
+                            <li>Для каждого K от 1 до N:
+                                <ul>
+                                    <li>Обновить хеш-таблицу для K-го элемента массива A.</li>
+                                    <li>Обновить хеш-таблицу для K-го элемента массива B.</li>
+                                    <li>Подсчитать количество общих элементов для первых K элементов.</li>
+                                    <li>Записать результат в массив результатов.</li>
+                                </ul>
+                            </li>
+                            <li>Вернуть массив результатов.</li>
+                        </ol>
+                        <ul>
+                            <li>Временная сложность: O(N), где N - длина массивов.</li>
+                            <li>Пространственная сложность: O(N) для хранения хеш-таблицы и массива результатов.</li>
+                        </ul>
+
+                        <pre><code class="go">func countCommonPrefixes(a, b []int) []int {
+    n := len(a)
+    result := make([]int, n+1)
+    has := make(map[int]int)
+
+    for k := 1; k <= n; k++ {
+        // Обновляем хеш-таблицу для текущего элемента a[k-1]
+        if _, exists := has[a[k-1]]; !exists {
+            has[a[k-1]] = 0
+        }
+        if has[a[k-1]] == 1 {
+            has[a[k-1]] = 2
+        } else {
+            has[a[k-1]] = 0
+        }
+
+        // Обновляем хеш-таблицу для текущего элемента b[k-1]
+        if _, exists := has[b[k-1]]; !exists {
+            has[b[k-1]] = 1
+        }
+        if has[b[k-1]] == 0 {
+            has[b[k-1]] = 2
+        }
+
+        // Подсчитываем общие элементы
+        count := 0
+        for i := 0; i < k; i++ {
+            if has[a[i]] == 2 {
+                count++
+            }
+        }
+        result[k] = count
+    }
+
+    return result
+}</code>
+                                        </pre>
+                    </div>
+                </div>
+            </div>
+            <div class="accordion-item">
+                <h2 class="accordion-header">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#q29">
+                        Сжатие числового массива
+                    </button>
+                </h2>
+                <div id="q29" class="accordion-collapse collapse" data-bs-parent="#accordionBlock">
+                    <div class="accordion-body">
+                        <p>
+                            Дан массив целых чисел. Необходимо "сжать" его, представив последовательные числа в виде
+                            диапазонов.
+                            Каждый диапазон должен быть представлен либо одним числом (если диапазон состоит из одного
+                            числа),
+                            либо парой чисел (начало и конец диапазона). Результат должен быть представлен в виде
+                            массива массивов.
+                        </p>
+                        <p>
+                            Вход: [-3, -10, 1, -2, 2, 3, 5]<br>
+                            Выход: [[-10], [-3, -2], [1, 3], [5]]
+                        </p>
+
+                        <h3>Алгоритм решения</h3>
+                        <ol>
+                            <li>Создать словарь (map) для хранения всех уникальных чисел из входного массива.</li>
+                            <li>Пока словарь не пуст:
+                                <ul>
+                                    <li>Выбрать произвольное число из словаря.</li>
+                                    <li>Найти максимальный непрерывный диапазон чисел, содержащих выбранное число.</li>
+                                    <li>Добавить найденный диапазон в результат.</li>
+                                    <li>Удалить все числа найденного диапазона из словаря.</li>
+                                </ul>
+                            </li>
+                            <li>Вернуть полученный результат.</li>
+                        </ol>
+                        <p>
+                            Временная сложность: O(n), где n - количество элементов в исходном массиве.<br>
+                            Пространственная сложность: O(n) для хранения словаря и результата.
+                        </p>
+
+                        <pre><code class="go">func CompressArray(arr []int) [][]int {
+    // Создаем словарь для хранения элементов массива
+    dict := make(map[int]bool)
+    for _, num := range arr {
+        dict[num] = true
+    }
+
+    result := [][]int{}
+
+    for len(dict) > 0 {
+        // Выбираем произвольный ключ из словаря
+        var key int
+        for k := range dict {
+            key = k
+            break
+        }
+
+        // Ищем максимальные l и r
+        l, r := key, key
+        for dict[l-1] {
+            l--
+        }
+        for dict[r+1] {
+            r++
+        }
+
+        // Добавляем результат
+        if l == r {
+            result = append(result, []int{l})
+        } else {
+            result = append(result, []int{l, r})
+        }
+
+        // Удаляем найденные числа из словаря
+        for i := l; i <= r; i++ {
+            delete(dict, i)
+        }
+    }
+
+    return result
+}</code>
+                                        </pre>
+                    </div>
+                </div>
+            </div>
+            <div class="accordion-item">
+                <h2 class="accordion-header">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#q30">
+                        Подсчет подпоследовательностей в массиве
+                    </button>
+                </h2>
+                <div id="q30" class="accordion-collapse collapse" data-bs-parent="#accordionBlock">
+                    <div class="accordion-body">
+                        <p>
+                            Даны два массива целых чисел: <code>a</code> и <code>b</code>. Необходимо найти количество
+                            подотрезков массива <code>a</code>,
+                            которые являются подпоследовательностями массива <code>b</code>.
+                        </p>
+
+                        <h3>Алгоритм решения</h3>
+                        <ol>
+                            <li>Инициализируем счетчик <code>count</code> для подсчета подходящих подотрезков.</li>
+                            <li>Перебираем все возможные левые границы <code>l</code> в массиве <code>a</code>.</li>
+                            <li>Для каждой левой границы:
+                                <ul>
+                                    <li>Инициализируем счетчик <code>cnt</code> для отслеживания совпадений с элементами
+                                        <code>b</code>.
+                                    </li>
+                                    <li>Проходим по элементам <code>a</code>, начиная с позиции <code>l</code>,
+                                        сравнивая их с элементами <code>b</code>.
+                                    </li>
+                                    <li>Если находим совпадение, увеличиваем <code>cnt</code> и переходим к следующему
+                                        элементу <code>b</code>.
+                                    </li>
+                                    <li>Если <code>cnt</code> достигает длины <code>b</code>, значит, мы нашли полную
+                                        подпоследовательность:
+                                        <ul>
+                                            <li>Добавляем к <code>count</code> количество оставшихся элементов в
+                                                <code>a</code>.
+                                            </li>
+                                            <li>Прерываем внутренний цикл и переходим к следующей левой границе.</li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li>Возвращаем итоговое значение <code>count</code>.</li>
+                        </ol>
+                        <ul>
+                            <li><strong>Временная сложность:</strong> O(n * m), где n - длина массива a, m - длина
+                                массива b.
+                                В худшем случае, для каждого элемента a мы можем пройти по всем элементам b.
+                            </li>
+                            <li><strong>Пространственная сложность:</strong> O(1), так как мы используем только
+                                несколько
+                                дополнительных переменных, независимо от размера входных данных.
+                            </li>
+                        </ul>
+
+                        <pre><code class="go">func countSubarrays(a, b []int) int {
+	count := 0
+	n := len(a)
+	m := len(b)
+
+	for l := 0; l < n; l++ {
+		cnt := 0
+		for i, j := l, 0; i < n && j < m; i++ {
+			if a[i] == b[j] {
+				j++
+				cnt++
+			}
+			if cnt == m {
+				count += n - i
+				break
+			}
+		}
+	}
+
+	return count
+}
+</code>
+                                        </pre>
+                    </div>
+                </div>
+            </div>
+            <div class="accordion-item">
+                <h2 class="accordion-header">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#q31">
+                        Поиск нуля с максимальным расстоянием до ближайшей единицы
+                    </button>
+                </h2>
+                <div id="q31" class="accordion-collapse collapse" data-bs-parent="#accordionBlock">
+                    <div class="accordion-body">
+                        <p>
+                            Дан массив, состоящий только из нулей и единиц. Гарантируется, что в массиве есть хотя бы
+                            один ноль и одна единица.
+                            Необходимо найти позицию нуля, у которого расстояние до ближайшей единицы максимально.
+                        </p>
+
+                        <h3>Алгоритм решения</h3>
+                        <ol>
+                            <li>Инициализируем переменные:
+                                <ul>
+                                    <li><code>lastOne</code>: позиция последней встреченной единицы (изначально -1)</li>
+                                    <li><code>maxDistance</code>: максимальное найденное расстояние</li>
+                                    <li><code>result</code>: позиция нуля с максимальным расстоянием</li>
+                                </ul>
+                            </li>
+                            <li>Проходим по массиву слева направо:
+                                <ul>
+                                    <li>Если встречаем единицу:
+                                        <ul>
+                                            <li>Если это первая единица, обрабатываем случай начальных нулей</li>
+                                            <li>Иначе вычисляем расстояние до предыдущей единицы</li>
+                                            <li>Если новое расстояние больше максимального, обновляем
+                                                <code>maxDistance</code> и <code>result</code></li>
+                                        </ul>
+                                    </li>
+                                    <li>Обновляем позицию последней единицы</li>
+                                </ul>
+                            </li>
+                            <li>После прохода проверяем случай конечных нулей</li>
+                            <li>Возвращаем найденную позицию нуля</li>
+                        </ol>
+                        <ul>
+                            <li><strong>Временная сложность:</strong> O(n), где n - длина массива.
+                                Алгоритм проходит по массиву ровно один раз.
+                            </li>
+                            <li><strong>Пространственная сложность:</strong> O(1), так как используется
+                                фиксированное количество дополнительных переменных, независимо от размера входных
+                                данных.
+                            </li>
+                        </ul>
+
+                        <pre><code class="go">func findMaxDistanceZero(arr []int) int {
+	n := len(arr)
+	lastOne := -1
+	maxDistance := 0
+	result := 0
+
+	for i := 0; i < n; i++ {
+		if arr[i] == 1 {
+			if lastOne == -1 {
+				// Обработка случая, когда последовательность начинается с нуля
+				maxDistance = i
+				result = 0
+			} else {
+				// Вычисление расстояния между текущей единицей и предыдущей
+				distance := (i - lastOne) / 2
+				if distance > maxDistance {
+					maxDistance = distance
+					result = lastOne + distance
+				}
+			}
+			lastOne = i
+		}
+	}
+
+	// Обработка случая, когда последовательность заканчивается нулем
+	if n-1-lastOne > maxDistance {
+		result = n - 1
+	}
+
+	return result
+}</code>
+                                        </pre>
+                    </div>
+                </div>
+            </div>
+            <div class="accordion-item">
+                <h2 class="accordion-header">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#q32">
+                        Минимальное произведение двух уникальных чисел
+                    </button>
+                </h2>
+                <div id="q32" class="accordion-collapse collapse" data-bs-parent="#accordionBlock">
+                    <div class="accordion-body">
+                        <p>Дан массив целых чисел длины n > 1. Необходимо найти минимальное произведение, которое можно
+                            получить из двух чисел массива с уникальными позициями.</p>
+
+
+                        <h3>Алгоритм решения</h3>
+                        <ol>
+                            <li>Проверяем длину массива. Если она меньше или равна 1, возвращаем 0, так как невозможно
+                                выбрать два уникальных числа.
+                            </li>
+                            <li>Инициализируем переменные для хранения двух максимальных (max1, max2) и двух минимальных
+                                (min1, min2) чисел.
+                            </li>
+                            <li>Проходим по массиву один раз, обновляя значения max1, max2, min1 и min2.</li>
+                            <li>После прохода по массиву проверяем три условия:
+                                <ul>
+                                    <li>Если min1 ≤ 0 и max1 ≥ 0, возвращаем min1 * max1 (случай с отрицательными и
+                                        неотрицательными числами).
+                                    </li>
+                                    <li>Если min1 > 0 (все числа положительные), возвращаем min1 * min2.</li>
+                                    <li>В противном случае (все числа отрицательные), возвращаем max1 * max2.</li>
+                                </ul>
+                            </li>
+                        </ol>
+                        <ul>
+                            <li><strong>Временная сложность:</strong> O(n), где n - длина входного массива. Мы проходим
+                                по массиву только один раз.
+                            </li>
+                            <li><strong>Пространственная сложность:</strong> O(1), так как мы используем фиксированное
+                                количество дополнительных переменных независимо от размера входного массива.
+                            </li>
+                        </ul>
+
+                        <pre><code class="go">func minProduct(arr []int) int {
+	if len(arr) <= 1 {
+		return 0 // Невозможно выбрать два уникальных числа
+	}
+
+	max1, max2 := math.MinInt32, math.MinInt32
+	min1, min2 := math.MaxInt32, math.MaxInt32
+
+	for _, num := range arr {
+		// Обновляем максимальные числа
+		if num > max1 {
+			max2 = max1
+			max1 = num
+		} else if num > max2 {
+			max2 = num
+		}
+
+		// Обновляем минимальные числа
+		if num < min1 {
+			min2 = min1
+			min1 = num
+		} else if num < min2 {
+			min2 = num
+		}
+	}
+
+	// Проверяем условия и возвращаем результат
+	if min1 <= 0 && max1 >= 0 {
+		return min1 * max1
+	} else if min1 > 0 {
+		return min1 * min2
+	} else {
+		return max1 * max2
+	}
+}
+</code>
+                                        </pre>
+                    </div>
+                </div>
+            </div>
+            <div class="accordion-item">
+                <h2 class="accordion-header">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#q33">
+                        Подсчет непересекающихся отрезков
+                    </button>
+                </h2>
+                <div id="q33" class="accordion-collapse collapse" data-bs-parent="#accordionBlock">
+                    <div class="accordion-body">
+                        <p>Дано N пар чисел a_i и b_i, представляющих отрезки на числовой прямой от (a_i, 0) до (1,
+                            b_i). Требуется найти количество отрезков, которые не пересекаются с другими отрезками в
+                            этом
+                            множестве.</p>
+
+                        <h2>Алгоритм решения</h2>
+                        <ol>
+                            <li>Создаем структуру Segment для представления отрезков с полями a и b.</li>
+                            <li>Формируем слайс отрезков из входных данных a и b.</li>
+                            <li>Сортируем отрезки по возрастанию координаты a (начальной точки).</li>
+                            <li>Инициализируем счетчик непересекающихся отрезков (count) и переменную для хранения
+                                максимальной конечной точки (maxB).
+                            </li>
+                            <li>Проходим по отсортированному массиву отрезков слева направо:
+                                <ul>
+                                    <li>Если конечная точка текущего отрезка (b) больше maxB, увеличиваем count и
+                                        обновляем maxB.
+                                    </li>
+                                </ul>
+                            </li>
+                            <li>Возвращаем значение count как результат.</li>
+                        </ol>
+
+                        <ul>
+                            <li><strong>Временная сложность:</strong> O(N log N), где N - количество отрезков. Основной
+                                вклад вносит сортировка отрезков.
+                            </li>
+                            <li><strong>Пространственная сложность:</strong> O(N) для хранения отсортированного массива
+                                отрезков.
+                            </li>
+                        </ul>
+
+                        <pre><code class="go">type Segment struct {
+	a, b int
+}
+
+func countNonIntersectingSegments(a, b []int) int {
+	n := len(a)
+	segments := make([]Segment, n)
+	for i := 0; i < n; i++ {
+		segments[i] = Segment{a[i], b[i]}
+	}
+
+	// Сортируем отрезки по координате a
+	sort.Slice(segments, func(i, j int) bool {
+		return segments[i].a < segments[j].a
+	})
+
+	count := 0
+	maxB := 0
+
+	for i := 0; i < n; i++ {
+		if segments[i].b > maxB {
+			count++
+			maxB = segments[i].b
+		}
+	}
+
+	return count
+}</code>
+                                        </pre>
+                    </div>
+                </div>
+            </div>
+            <div class="accordion-item">
+                <h2 class="accordion-header">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#q34">
+                        Оптимальное размещение нуля в бинарном массиве
+                    </button>
+                </h2>
+                <div id="q34" class="accordion-collapse collapse" data-bs-parent="#accordionBlock">
+                    <div class="accordion-body">
+                        <p>Дан массив, состоящий только из 0 и 1. Требуется найти такую позицию для размещения нуля,
+                            чтобы минимальное расстояние до ближайшей единицы было максимальным.</p>
+
+                        <h2>Алгоритм решения</h2>
+                        <ol>
+                            <li>Инициализируем переменные:
+                                <ul>
+                                    <li><code>lastOne</code>: индекс последней встреченной единицы (изначально -1)</li>
+                                    <li><code>maxDistance</code>: максимальное найденное расстояние</li>
+                                    <li><code>optimalPosition</code>: оптимальная позиция для нуля</li>
+                                </ul>
+                            </li>
+                            <li>Проходим по массиву слева направо:
+                                <ul>
+                                    <li>Если встречаем 1:
+                                        <ul>
+                                            <li>Если это первая единица, сравниваем расстояние от начала массива</li>
+                                            <li>Иначе вычисляем расстояние между текущей и предыдущей единицей</li>
+                                        </ul>
+                                    </li>
+                                    <li>Обновляем <code>maxDistance</code> и <code>optimalPosition</code>, если найдено
+                                        большее расстояние
+                                    </li>
+                                    <li>Обновляем <code>lastOne</code></li>
+                                </ul>
+                            </li>
+                            <li>После прохода проверяем расстояние от последней единицы до конца массива</li>
+                            <li>Возвращаем <code>optimalPosition</code></li>
+                        </ol>
+
+                        <ul>
+                            <li><strong>Временная сложность:</strong> O(n), где n - длина входного массива. Алгоритм
+                                проходит по массиву ровно один раз.
+                            </li>
+                            <li><strong>Пространственная сложность:</strong> O(1), так как используется только
+                                фиксированное количество дополнительных переменных, независимо от размера входного
+                                массива.
+                            </li>
+                        </ul>
+
+                        <pre><code class="go">func findOptimalZeroPosition(arr []int) int {
+    n := len(arr)
+    lastOne := -1
+    maxDistance := 0
+    optimalPosition := 0
+
+    for i := 0; i < n; i++ {
+        if arr[i] == 1 {
+            if lastOne == -1 {
+                // Первая единица в массиве
+                if i > maxDistance {
+                    maxDistance = i
+                    optimalPosition = 0
+                }
+            } else {
+                // Расстояние между текущей и предыдущей единицей
+                distance := (i - lastOne) / 2
+                if distance > maxDistance {
+                    maxDistance = distance
+                    optimalPosition = (i + lastOne) / 2
+                }
+            }
+            lastOne = i
+        }
+    }
+
+    // Проверяем расстояние от последней единицы до конца массива
+    if n - 1 - lastOne > maxDistance {
+        maxDistance = n - 1 - lastOne
+        optimalPosition = n - 1
+    }
+
+    return optimalPosition
 }</code>
                                         </pre>
                     </div>

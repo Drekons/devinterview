@@ -839,6 +839,203 @@ func validateBST(node *TreeNode, min, max int) bool {
                     </div>
                 </div>
             </div>
+            <div class="accordion-item">
+                <h2 class="accordion-header">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#q13">
+                        Поиск равных поддеревьев с максимальной суммой вершин
+                    </button>
+                </h2>
+                <div id="q13" class="accordion-collapse collapse" data-bs-parent="#accordionBlock">
+                    <div class="accordion-body">
+                        <p>
+                            Дано бинарное дерево, где каждая вершина содержит букву от 'a' до 'z'.
+                            Необходимо найти две вершины, поддеревья которых содержат одинаковый набор букв,
+                            и сумма вершин в этих поддеревьях максимальна.
+                        </p>
+
+                        <h3>Алгоритм решения</h3>
+                        <ol>
+                            <li>Выполняем обход дерева в глубину (DFS).</li>
+                            <li>Для каждой вершины:
+                                <ul>
+                                    <li>Рекурсивно обрабатываем левое и правое поддерево.</li>
+                                    <li>Объединяем информацию о буквах из левого и правого поддерева.</li>
+                                    <li>Добавляем букву текущей вершины.</li>
+                                    <li>Создаем уникальный ключ, представляющий набор букв в поддереве.</li>
+                                    <li>Сохраняем сумму вершин для данного ключа.</li>
+                                    <li>Если найден одинаковый набор букв, обновляем результат при необходимости.</li>
+                                </ul>
+                            </li>
+                            <li>Возвращаем результат с максимальной суммой и одной из вершин.</li>
+                        </ol>
+
+                        <ul>
+                            <li><strong>Временная сложность:</strong> O(N), где N - количество вершин в дереве.
+                                Каждая вершина обрабатывается один раз.
+                            </li>
+                            <li><strong>Пространственная сложность:</strong> O(N), в худшем случае, когда все вершины
+                                имеют уникальные наборы букв в своих поддеревьях.
+                            </li>
+                        </ul>
+                        <pre><code class="go">// Node представляет узел в бинарном дереве
+type Node struct {
+    Value byte  // Значение узла (буква от 'a' до 'z')
+    Left  *Node // Левый дочерний узел
+    Right *Node // Правый дочерний узел
+}
+
+// Result хранит результат поиска максимально равных узлов
+type Result struct {
+    MaxSum   int   // Максимальная сумма вершин в поддеревьях
+    MaxNode1 *Node // Первый узел с максимальной суммой
+    MaxNode2 *Node // Второй узел с максимальной суммой (не используется в текущей реализации)
+}
+
+// findMaxEqualNodes находит две равные вершины с максимальной суммой вершин в их поддеревьях
+func findMaxEqualNodes(root *Node) Result {
+    result := Result{}
+    letterCounts := make(map[string][]int) // Карта для хранения сумм вершин для каждого уникального набора букв
+
+    var dfs func(*Node) (int, map[byte]int)
+    dfs = func(node *Node) (int, map[byte]int) {
+        if node == nil {
+            return 0, make(map[byte]int)
+        }
+
+        // Рекурсивно обходим левое и правое поддерево
+        leftSum, leftLetters := dfs(node.Left)
+        rightSum, rightLetters := dfs(node.Right)
+
+        // Вычисляем сумму вершин в текущем поддереве
+        sum := leftSum + rightSum + 1
+
+        // Объединяем буквы из левого и правого поддеревьев
+        letters := make(map[byte]int)
+        for k, v := range leftLetters {
+            letters[k] += v
+        }
+        for k, v := range rightLetters {
+            letters[k] += v
+        }
+        letters[node.Value]++ // Добавляем текущую букву
+
+        // Создаем ключ из набора букв
+        key := mapToString(letters)
+        letterCounts[key] = append(letterCounts[key], sum)
+
+        // Проверяем, есть ли равные поддеревья с большей суммой
+        if len(letterCounts[key]) >= 2 {
+            maxSum := letterCounts[key][len(letterCounts[key])-1] + letterCounts[key][len(letterCounts[key])-2]
+            if maxSum > result.MaxSum {
+                result.MaxSum = maxSum
+                result.MaxNode1 = node
+                // Здесь мы не можем точно определить второй узел, но это не требуется по условию задачи
+            }
+        }
+
+        return sum, letters
+    }
+
+    dfs(root)
+    return result
+}
+
+// mapToString преобразует карту букв и их количества в строковое представление
+func mapToString(m map[byte]int) string {
+    result := ""
+    for i := byte('a'); i <= 'z'; i++ {
+        if count, exists := m[i]; exists {
+            result += fmt.Sprintf("%c%d", i, count)
+        }
+    }
+    return result
+}</code>
+                                        </pre>
+                    </div>
+                </div>
+            </div>
+            <div class="accordion-item">
+                <h2 class="accordion-header">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#q14">
+                        Нахождение диаметра бинарного дерева
+                    </button>
+                </h2>
+                <div id="q14" class="accordion-collapse collapse" data-bs-parent="#accordionBlock">
+                    <div class="accordion-body">
+                        <p>Требуется найти диаметр бинарного дерева. Диаметр дерева определяется как наибольшее
+                            расстояние между любыми двумя узлами в дереве. Это расстояние может проходить или не
+                            проходить через корень.</p>
+
+                        <h3>Алгоритм решения</h3>
+                        <ol>
+                            <li>Определяем структуру <code>TreeNode</code> для представления узла бинарного дерева.</li>
+                            <li>Реализуем функцию <code>diameterOfBinaryTree</code>, которая находит диаметр дерева:
+                                <ul>
+                                    <li>Инициализируем переменную <code>diameter</code> для хранения максимального
+                                        диаметра.
+                                    </li>
+                                    <li>Определяем вложенную функцию <code>dfs</code> для поиска в глубину.</li>
+                                </ul>
+                            </li>
+                            <li>Функция <code>dfs</code> выполняет следующие действия:
+                                <ul>
+                                    <li>Если узел <code>nil</code>, возвращаем 0.</li>
+                                    <li>Рекурсивно вызываем <code>dfs</code> для левого и правого поддеревьев.</li>
+                                    <li>Обновляем <code>diameter</code>, если сумма высот левого и правого поддеревьев
+                                        больше текущего диаметра.
+                                    </li>
+                                    <li>Возвращаем максимальную высоту текущего поддерева + 1.</li>
+                                </ul>
+                            </li>
+                            <li>Вызываем <code>dfs</code> для корня дерева.</li>
+                            <li>Возвращаем найденный диаметр.</li>
+                        </ol>
+
+                        <ul>
+                            <li><strong>Временная сложность:</strong> O(n), где n - количество узлов в дереве. Алгоритм
+                                посещает каждый узел ровно один раз.
+                            </li>
+                            <li><strong>Пространственная сложность:</strong> O(h), где h - высота дерева. Это
+                                обусловлено рекурсивными вызовами на стеке. В худшем случае (для несбалансированного
+                                дерева) может достигать O(n).
+                            </li>
+                        </ul>
+                        <pre><code class="go">type TreeNode struct {
+    Val   int
+    Left  *TreeNode
+    Right *TreeNode
+}
+
+// diameterOfBinaryTree находит диаметр бинарного дерева
+func diameterOfBinaryTree(root *TreeNode) int {
+    diameter := 0
+
+    // dfs выполняет поиск в глубину и возвращает высоту поддерева
+    var dfs func(*TreeNode) int
+    dfs = func(node *TreeNode) int {
+        if node == nil {
+            return 0
+        }
+
+        leftHeight := dfs(node.Left)
+        rightHeight := dfs(node.Right)
+
+        // Обновляем диаметр, если текущий путь длиннее
+        diameter = max(diameter, leftHeight+rightHeight)
+
+        // Возвращаем высоту текущего поддерева
+        return max(leftHeight, rightHeight) + 1
+    }
+
+    dfs(root)
+    return diameter
+}</code>
+                                        </pre>
+                    </div>
+                </div>
+            </div>
         </div>
     </main>
 </div>

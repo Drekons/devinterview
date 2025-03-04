@@ -768,6 +768,152 @@ func binarySearchNotSorted(arr []int, target int) int {
                     </div>
                 </div>
             </div>
+            <div class="accordion-item">
+                <h2 class="accordion-header">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#q9">
+                        Объединение пользователей на основе общих email-адресов
+                    </button>
+                </h2>
+                <div id="q9" class="accordion-collapse collapse" data-bs-parent="#accordionBlock">
+                    <div class="accordion-body">
+                        <p>Этот алгоритм решает задачу объединения пользователей, у которых есть общие email-адреса. Он
+                            использует структуру графа для представления связей между пользователями и их
+                            email-адресами, а затем находит связанные компоненты в этом графе.</p>
+                        <h3>Алгоритм решения</h3>
+                        <ol>
+                            <li>Создание графа:
+                                <ul>
+                                    <li>Каждый пользователь представлен как вершина.</li>
+                                    <li>Каждый email-адрес связывает пользователей, которым он принадлежит.</li>
+                                </ul>
+                            </li>
+                            <li>Добавление пользователей в граф:
+                                <ul>
+                                    <li>Для каждого пользователя создается запись в графе.</li>
+                                    <li>Каждый email-адрес пользователя связывается с его именем.</li>
+                                </ul>
+                            </li>
+                            <li>Поиск связанных компонентов:
+                                <ul>
+                                    <li>Используется алгоритм поиска в глубину (DFS) для нахождения всех связанных
+                                        пользователей.
+                                    </li>
+                                    <li>Каждый найденный компонент представляет группу связанных пользователей.</li>
+                                </ul>
+                            </li>
+                            <li>Удаление дубликатов email-адресов в каждой группе.</li>
+                            <li>Сортировка результата по именам пользователей.</li>
+                        </ol>
+
+                        <ul>
+                            <li>Временная сложность: O(N * E + N log N), где:
+                                <ul>
+                                    <li>N - количество пользователей</li>
+                                    <li>E - общее количество email-адресов</li>
+                                </ul>
+                            </li>
+                            <li>Пространственная сложность: O(N + E)</li>
+                        </ul>
+
+
+                        <pre><code class="go">// User представляет пользователя с именем и списком email-адресов
+type User struct {
+	name   string
+	emails []string
+}
+
+// Graph представляет граф пользователей и их email-адресов
+type Graph struct {
+	users  map[string]*User  // Карта пользователей по имени
+	emails map[string]string // Карта email-адресов к именам пользователей
+}
+
+// NewGraph создает и возвращает новый экземпляр Graph
+func NewGraph() *Graph {
+	return &Graph{
+		users:  make(map[string]*User),
+		emails: make(map[string]string),
+	}
+}
+
+// AddUser добавляет пользователя в граф
+func (g *Graph) AddUser(user User) {
+	// Добавляем пользователя, если его еще нет в графе
+	if _, exists := g.users[user.name]; !exists {
+		g.users[user.name] = &user
+	}
+	// Связываем каждый email с именем пользователя
+	for _, email := range user.emails {
+		g.emails[email] = user.name
+	}
+}
+
+// dfs выполняет поиск в глубину для нахождения связанных пользователей
+func (g *Graph) dfs(userName string, visited map[string]bool, component *User) {
+	visited[userName] = true
+	user := g.users[userName]
+	component.emails = append(component.emails, user.emails...)
+
+	// Рекурсивно обходим всех связанных пользователей
+	for _, email := range user.emails {
+		if connectedUser, exists := g.emails[email]; exists && !visited[connectedUser] {
+			g.dfs(connectedUser, visited, component)
+		}
+	}
+}
+
+// FindConnectedUsers находит все группы связанных пользователей
+func (g *Graph) FindConnectedUsers() []User {
+	visited := make(map[string]bool)
+	var result []User
+
+	// Обходим всех пользователей и находим связанные компоненты
+	for userName := range g.users {
+		if !visited[userName] {
+			continue
+		}
+
+		component := &User{name: userName}
+		g.dfs(userName, visited, component)
+		component.emails = g.removeDuplicates(component.emails)
+		result = append(result, *component)
+	}
+
+	// Сортируем результат по именам пользователей
+	sort.Slice(result, func(i, j int) bool {
+		return result[i].name < result[j].name
+	})
+
+	return result
+}
+
+// removeDuplicates удаляет дубликаты email-адресов
+func (g *Graph) removeDuplicates(emails []string) []string {
+	seen := make(map[string]bool)
+	var result []string
+	for _, email := range emails {
+		if !seen[email] {
+			seen[email] = true
+			result = append(result, email)
+		}
+	}
+	return result
+}
+
+// mergeUsers объединяет пользователей на основе общих email-адресов
+func mergeUsers(users []User) []User {
+	graph := NewGraph()
+	for _, user := range users {
+		graph.AddUser(user)
+	}
+
+	return graph.FindConnectedUsers()
+}</code>
+                                        </pre>
+                    </div>
+                </div>
+            </div>
         </div>
     </main>
 </div>
